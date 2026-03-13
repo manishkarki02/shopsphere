@@ -1,20 +1,26 @@
 {
-  "name": "Shop-Sphere",
-  "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
-  },
-  "devDependencies": {
-    "prettier": "^3.7.4",
-    "turbo": "^2.7.4",
-    "typescript": "5.9.2"
-  },
-  "packageManager": "pnpm@9.0.0",
-  "engines": {
-    "node": ">=18"
-  }
+    "name": "shop-sphere",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "turbo dev",
+        "build": "turbo build",
+        "lint": "turbo lint",
+        "type-check": "turbo type-check",
+        "db:push": "turbo db:push",
+        "db:migrate": "turbo db:migrate",
+        "db:studio": "turbo db:studio",
+        "clean": "turbo clean && rm -rf node_modules"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.5",
+        "prettier": "^3.2.4",
+        "turbo": "^1.11.3",
+        "typescript": "^5.3.3"
+    },
+    "packageManager": "pnpm@8.15.1",
+    "engines": {
+        "node": ">=20.0.0",
+        "pnpm": ">=8.0.0"
+    }
 }

@@ -1,81 +1,126 @@
 import httpStatus from "http-status";
-import { Product } from "./product.model";
 import { ApiError } from "@/common/utils/response.util";
 import Environment from "@/configs/env";
-import type { CreateProductSchema, UpdateProductSchema } from "./validation/product.validation";
+import { Product } from "./product.model";
+import type {
+	CreateProductSchema,
+	UpdateProductSchema,
+	UpdateProductStatusSchema,
+} from "./validation/product.validation";
 
-export async function createProduct(body: CreateProductSchema, files: Express.Multer.File[]) {
-    const images = files?.map((file) => {
-        return `${Environment.get("SERVER_URL") || "http://localhost:5000"}/${file.path}`;
-    }) || [];
+export async function createProduct(
+	body: CreateProductSchema,
+	files: Express.Multer.File[],
+) {
+	const images =
+		files?.map((file) => {
+			return `${Environment.get("SERVER_URL") || "http://localhost:5000"}/${file.path}`;
+		}) || [];
 
-    if (images.length === 0) {
-        throw new ApiError(httpStatus.BAD_REQUEST, { message: "Please insert atleast 1 image" });
-    }
+	if (images.length === 0) {
+		throw new ApiError(httpStatus.BAD_REQUEST, {
+			message: "Please insert atleast 1 image",
+		});
+	}
 
-    const thumbnail = images[0];
+	const thumbnail = images[0];
 
-    const productRepeated = await Product.findOne({ productName: body.productName });
+	const productRepeated = await Product.findOne({
+		productName: body.productName,
+	});
 
-    if (productRepeated) {
-        throw new ApiError(httpStatus.CONFLICT, { message: "Product already exists in database" });
-    }
+	if (productRepeated) {
+		throw new ApiError(httpStatus.CONFLICT, {
+			message: "Product already exists in database",
+		});
+	}
 
-    const newProduct = await Product.create({
-        ...body,
-        thumbnail,
-        images,
-    });
+	const newProduct = await Product.create({
+		...body,
+		thumbnail,
+		images,
+	});
 
-    return newProduct;
+	return newProduct;
 }
 
 export async function getProducts(query: any) {
-    const page = parseInt(query.page as string) || 1;
-    const limit = parseInt(query.limit as string) || 12;
-    const skip = (page - 1) * limit;
+	const page = parseInt(query.page as string) || 1;
+	const limit = parseInt(query.limit as string) || 12;
+	const skip = (page - 1) * limit;
 
-    const products = await Product.find().skip(skip).limit(limit);
-    if (!products) {
-        throw new ApiError(httpStatus.NOT_FOUND, { message: "No products in database" });
-    }
+	const products = await Product.find().skip(skip).limit(limit);
+	if (!products) {
+		throw new ApiError(httpStatus.NOT_FOUND, {
+			message: "No products in database",
+		});
+	}
 
-    return products;
+	return products;
 }
 
 export async function getProductById(id: string) {
-    const product = await Product.findById(id);
-    if (!product) {
-        throw new ApiError(httpStatus.NOT_FOUND, { message: "Product not found." });
-    }
-    return product;
+	const product = await Product.findById(id);
+	if (!product) {
+		throw new ApiError(httpStatus.NOT_FOUND, { message: "Product not found." });
+	}
+	return product;
 }
 
-export async function updateProduct(id: string, body: UpdateProductSchema, files?: Express.Multer.File[]) {
-    const updateData: any = { ...body };
+export async function updateProduct(
+	id: string,
+	body: UpdateProductSchema,
+	files?: Express.Multer.File[],
+) {
+	const updateData: any = { ...body };
 
-    if (files && files.length > 0) {
-        const images = files.map((file) => {
-             return `${Environment.get("SERVER_URL") || "http://localhost:5000"}/${file.path}`;
-        });
-        updateData.images = images;
-    }
+	if (files && files.length > 0) {
+		const images = files.map((file) => {
+			return `${Environment.get("SERVER_URL") || "http://localhost:5000"}/${file.path}`;
+		});
+		updateData.images = images;
+	}
 
-    const updatedProduct = await Product.findByIdAndUpdate(id, updateData, { new: true });
-    
-    if (!updatedProduct) {
-        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, { message: "Failed to update product." });
-    }
+	const updatedProduct = await Product.findByIdAndUpdate(id, updateData, {
+		new: true,
+	});
 
-    return updatedProduct;
+	if (!updatedProduct) {
+		throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, {
+			message: "Failed to update product.",
+		});
+	}
+
+	return updatedProduct;
+}
+
+export async function updateProductStatus(
+	id: string,
+	body: UpdateProductStatusSchema,
+) {
+	const updatedProduct = await Product.findByIdAndUpdate(
+		id,
+		{ isActive: body.isActive },
+		{ new: true },
+	);
+
+	if (!updatedProduct) {
+		throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, {
+			message: "Failed to update product status.",
+		});
+	}
+
+	return updatedProduct;
 }
 
 export async function deleteProduct(id: string) {
-    const deletedProduct = await Product.findByIdAndDelete(id);
+	const deletedProduct = await Product.findByIdAndDelete(id);
 
-    if (!deletedProduct) {
-        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, { message: "Failed to delete product" });
-    }
-    
-    return null;
+	if (!deletedProduct) {
+		throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, {
+			message: "Failed to delete product",
+		});
+	}
+
+	return null;
 }

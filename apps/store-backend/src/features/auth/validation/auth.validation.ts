@@ -1,24 +1,32 @@
+import {
+	resendOtpBodySchema,
+	signInBodySchema,
+	signUpBodySchema,
+	verifyEmailBodySchema,
+	type ResendOtpBody,
+	type SignInBody,
+	type SignUpBody,
+	type VerifyEmailBody,
+} from "@shop-sphere/shared";
 import { z } from "zod";
 
-import { signUpBodySchema, signInBodySchema, verifyEmailBodySchema, resendOtpBodySchema } from "@shop-sphere/shared";
-
 export const signUpSchema = z.object({
-    body: signUpBodySchema,
+	body: signUpBodySchema as unknown as z.ZodType<SignUpBody>,
 });
 
 export const signInSchema = z.object({
-    body: signInBodySchema,
+	body: signInBodySchema as unknown as z.ZodType<SignInBody>,
 });
 
 export const verifyEmailSchema = z.object({
-    body: verifyEmailBodySchema,
+	body: verifyEmailBodySchema as unknown as z.ZodType<VerifyEmailBody>,
 });
 
 export const resendOtpSchema = z.object({
-    body: resendOtpBodySchema,
+	body: resendOtpBodySchema as unknown as z.ZodType<ResendOtpBody>,
 });
 
-export type SignUpSchema = z.infer<typeof signUpSchema>["body"];
-export type SignInSchema = z.infer<typeof signInSchema>["body"];
-export type VerifyEmailSchema = z.infer<typeof verifyEmailSchema>["body"];
-export type ResendOtpSchema = z.infer<typeof resendOtpSchema>["body"];
+export type SignUpSchema = SignUpBody;
+export type SignInSchema = SignInBody;
+export type VerifyEmailSchema = VerifyEmailBody;
+export type ResendOtpSchema = ResendOtpBody;

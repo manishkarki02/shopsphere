@@ -1,55 +1,55 @@
 import express, { type Router } from "express";
-import * as cartController from "./cart.controller";
-import validatorMiddleware from "@/common/middlewares/validator.middleware";
 import { jwtAuthMiddleware } from "@/common/middlewares/auth.middleware";
-import { userValidator } from "@/common/middlewares/token.middleware";
+import { requireRole } from "@/common/middlewares/token.middleware";
+import validatorMiddleware from "@/common/middlewares/validator.middleware";
 import { catchAsync } from "@/common/utils/error.util";
+import * as cartController from "./cart.controller";
 import {
-    addCartSchema,
-    addAllToCartSchema,
-    updateCartSchema,
-    deleteCartSchema
+	addAllToCartSchema,
+	addCartSchema,
+	deleteCartSchema,
+	updateCartSchema,
 } from "./validation/cart.validation";
 
 const router: Router = express.Router();
 
 router.post(
-    "/",
-    jwtAuthMiddleware,
-    userValidator,
-    validatorMiddleware(addCartSchema),
-    catchAsync(cartController.addCart)
+	"/",
+	jwtAuthMiddleware,
+	requireRole(["CUSTOMER", "STAFF", "ADMIN"]),
+	validatorMiddleware(addCartSchema),
+	catchAsync(cartController.addCart),
 );
 
 router.post(
-    "/all",
-    jwtAuthMiddleware,
-    userValidator,
-    validatorMiddleware(addAllToCartSchema),
-    catchAsync(cartController.addAllToCart)
+	"/all",
+	jwtAuthMiddleware,
+	requireRole(["CUSTOMER", "STAFF", "ADMIN"]),
+	validatorMiddleware(addAllToCartSchema),
+	catchAsync(cartController.addAllToCart),
 );
 
 router.get(
-    "/",
-    jwtAuthMiddleware,
-    userValidator,
-    catchAsync(cartController.getCarts)
+	"/",
+	jwtAuthMiddleware,
+	requireRole(["CUSTOMER", "STAFF", "ADMIN"]),
+	catchAsync(cartController.getCarts),
 );
 
 router.put(
-    "/:id",
-    jwtAuthMiddleware,
-    userValidator,
-    validatorMiddleware(updateCartSchema),
-    catchAsync(cartController.updateCart)
+	"/:id",
+	jwtAuthMiddleware,
+	requireRole(["CUSTOMER", "STAFF", "ADMIN"]),
+	validatorMiddleware(updateCartSchema),
+	catchAsync(cartController.updateCart),
 );
 
 router.delete(
-    "/:id",
-    jwtAuthMiddleware,
-    userValidator,
-    validatorMiddleware(deleteCartSchema),
-    catchAsync(cartController.deleteCart)
+	"/:id",
+	jwtAuthMiddleware,
+	requireRole(["CUSTOMER", "STAFF", "ADMIN"]),
+	validatorMiddleware(deleteCartSchema),
+	catchAsync(cartController.deleteCart),
 );
 
 export default router;

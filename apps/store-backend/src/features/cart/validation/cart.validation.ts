@@ -1,29 +1,37 @@
-import { z } from "zod";
+import {
+	addAllToCartBodySchema,
+	addCartBodySchema,
+	updateCartBodySchema,
+	type AddAllToCartBody,
+	type AddCartBody,
+	type UpdateCartBody,
+} from "@shop-sphere/shared";
 import mongoose from "mongoose";
+import { z } from "zod";
 
-import { addCartBodySchema, addAllToCartBodySchema, updateCartBodySchema } from "@shop-sphere/shared";
-
-const objectIdSchema = z.string().refine((val) => mongoose.Types.ObjectId.isValid(val), {
-    message: "Invalid Mongoose ObjectId",
-});
+const objectIdSchema = z
+	.string()
+	.refine((val) => mongoose.Types.ObjectId.isValid(val), {
+		message: "Invalid Mongoose ObjectId",
+	});
 
 export const addCartSchema = z.object({
-    body: addCartBodySchema,
+	body: addCartBodySchema as unknown as z.ZodType<AddCartBody>,
 });
 
 export const addAllToCartSchema = z.object({
-    body: addAllToCartBodySchema,
+	body: addAllToCartBodySchema as unknown as z.ZodType<AddAllToCartBody>,
 });
 
 export const updateCartSchema = z.object({
-    params: z.object({ id: objectIdSchema }),
-    body: updateCartBodySchema,
+	params: z.object({ id: objectIdSchema }),
+	body: updateCartBodySchema as unknown as z.ZodType<UpdateCartBody>,
 });
 
 export const deleteCartSchema = z.object({
-    params: z.object({ id: objectIdSchema }),
+	params: z.object({ id: objectIdSchema }),
 });
 
-export type AddCartSchema = z.infer<typeof addCartSchema>["body"];
-export type AddAllToCartSchema = z.infer<typeof addAllToCartSchema>["body"];
-export type UpdateCartSchema = z.infer<typeof updateCartSchema>["body"];
+export type AddCartSchema = AddCartBody;
+export type AddAllToCartSchema = AddAllToCartBody;
+export type UpdateCartSchema = UpdateCartBody;

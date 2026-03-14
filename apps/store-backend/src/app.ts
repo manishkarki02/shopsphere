@@ -12,16 +12,16 @@ const app: Express = express();
 
 // HTTP logging
 if (Environment.get("NODE_ENV") !== "test") {
-    app.use(morgan.successHandler);
-    app.use(morgan.errorHandler);
+	app.use(morgan.successHandler);
+	app.use(morgan.errorHandler);
 }
 
 // CORS
 app.use(
-    cors({
-        origin: Environment.get("CORS_ORIGIN"),
-        credentials: true,
-    }),
+	cors({
+		origin: Environment.get("CORS_ORIGIN"),
+		credentials: true,
+	}),
 );
 
 // Body parsing
@@ -36,12 +36,12 @@ app.use("/api", routes);
 
 // Health check
 app.get("/health", (_req, res) => {
-    return ApiResponse.success(res, httpStatus.OK, { message: "API is healthy" });
+	return ApiResponse.success(res, httpStatus.OK, { message: "API is healthy" });
 });
 
 // 404 handler
 app.use((_req, _res, next) => {
-    next(new ApiError(httpStatus.NOT_FOUND, { message: "Route not found" }));
+	next(new ApiError(httpStatus.NOT_FOUND, { message: "Route not found" }));
 });
 
 // Error handling

@@ -1,26 +1,27 @@
 {
-    "name": "shop-sphere",
-    "version": "1.0.0",
-    "private": true,
-    "scripts": {
-        "dev": "turbo dev",
-        "build": "turbo build",
-        "lint": "turbo lint",
-        "type-check": "turbo type-check",
-        "db:push": "turbo db:push",
-        "db:migrate": "turbo db:migrate",
-        "db:studio": "turbo db:studio",
-        "clean": "turbo clean && rm -rf node_modules"
-    },
-    "devDependencies": {
-        "@types/node": "^20.11.5",
-        "prettier": "^3.2.4",
-        "turbo": "^1.11.3",
-        "typescript": "^5.3.3"
-    },
-    "packageManager": "pnpm@8.15.1",
-    "engines": {
-        "node": ">=20.0.0",
-        "pnpm": ">=8.0.0"
-    }
+	"name": "shop-sphere",
+	"version": "1.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "turbo dev",
+		"build": "turbo build",
+		"lint": "biome check",
+		"format": "biome format --write",
+		"type-check": "turbo type-check",
+		"db:push": "turbo db:push",
+		"db:migrate": "turbo db:migrate",
+		"db:studio": "turbo db:studio",
+		"clean": "turbo clean && rm -rf node_modules"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.4.7",
+		"@types/node": "^20.11.5",
+		"turbo": "^1.11.3",
+		"typescript": "^5.3.3"
+	},
+	"packageManager": "pnpm@8.15.1",
+	"engines": {
+		"node": ">=20.0.0",
+		"pnpm": ">=8.0.0"
+	}
 }

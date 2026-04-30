@@ -43,7 +43,7 @@ export const refreshTokenValidator = async (
 
 //====>>>> Validates the role <<<<====//
 export const requireRole = (allowedRoles: string[]) => {
-	return async (req: Request, res: Response, next: NextFunction) => {
+	return async (_: Request, res: Response, next: NextFunction) => {
 		try {
 			const user = res.locals.user;
 			const foundUser = await User.findById(user._id);

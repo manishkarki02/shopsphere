@@ -71,7 +71,7 @@ export default function Navbar() {
 				<div className="flex items-center gap-6 md:gap-10">
 					<Link to="/" className="flex items-center space-x-2">
 						<span className="inline-block font-bold text-xl uppercase tracking-wider">
-							Hamro <span className="text-primary">Store</span>
+							Hamro <span className="text-destructive">Store</span>
 						</span>
 					</Link>
 

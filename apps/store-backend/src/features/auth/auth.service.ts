@@ -10,7 +10,7 @@ import {
 import { otpGenerator } from "@/common/services/auth/otp.service";
 import { sendEmail } from "@/common/services/email/email.service";
 import { ApiError } from "@/common/utils/response.util";
-import { type IUser, User } from "@/features/user/user.model";
+import { User } from "@/features/user/user.model";
 
 import type {
 	ResendOtpSchema,

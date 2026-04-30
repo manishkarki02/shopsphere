@@ -33,7 +33,6 @@ const validatorMiddleware = (schema: AnyZodObject) => {
 				);
 			}
 
-			// Replace req data with parsed (transformed/defaulted) values
 			if (result.data.params) req.params = result.data.params;
 			if (result.data.query) req.query = result.data.query;
 			if (result.data.body) req.body = result.data.body;

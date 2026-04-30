@@ -52,8 +52,7 @@ export const accessTokenGenerator: RequestHandler = async (req, res) => {
 	});
 };
 
-export const logoutHandler: RequestHandler = async (req, res) => {
-	// Expected to have user injected by access token auth middleware
+export const logoutHandler: RequestHandler = async (_req, res) => {
 	await authService.logoutHandler(res.locals.user._id);
 	return ApiResponse.success(res, httpStatus.OK, {
 		message: "Log out successfully",

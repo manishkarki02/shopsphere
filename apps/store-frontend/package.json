@@ -1,5 +1,5 @@
 {
-	"name": "store-frontend",
+	"name": "@shop-sphere/store-frontend",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
@@ -35,6 +35,7 @@
 		"zustand": "^5.0.11"
 	},
 	"devDependencies": {
+		"@shop-sphere/typescript-config": "workspace:*",
 		"@tanstack/react-router-devtools": "^1.166.7",
 		"@tanstack/router-plugin": "^1.166.7",
 		"@types/node": "^24.12.0",

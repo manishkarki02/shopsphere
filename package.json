@@ -4,20 +4,19 @@
 	"private": true,
 	"scripts": {
 		"dev": "turbo dev",
+		"dev:server": "turbo dev --filter=store-backend",
+		"dev:client": "turbo dev --filter=store-frontend",
 		"build": "turbo build",
 		"lint": "biome check",
 		"format": "biome format --write",
 		"type-check": "turbo type-check",
-		"db:push": "turbo db:push",
-		"db:migrate": "turbo db:migrate",
-		"db:studio": "turbo db:studio",
 		"clean": "turbo clean && rm -rf node_modules"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.7",
-		"@types/node": "^20.11.5",
-		"turbo": "^1.11.3",
-		"typescript": "^5.3.3"
+		"@biomejs/biome": "2.4.13",
+		"@types/node": "^25.6.0",
+		"turbo": "^2.9.6",
+		"typescript": "^6.0.3"
 	},
 	"packageManager": "pnpm@8.15.1",
 	"engines": {

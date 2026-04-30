@@ -1,0 +1,85 @@
+name: ShopSphere-Dev
+services:
+  mongodb:
+    image: mongo:7
+    container_name: shop-sphere-db
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - shop-sphere-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shop-sphere-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: shop-sphere-api
+    restart: unless-stopped
+    env_file:
+      - .env
+      - apps/store-backend/.env
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DATABASE_URL=mongodb://mongodb:27017/shop-sphere
+      - CORS_ORIGIN=http://localhost:5173
+      - SERVER_URL=http://localhost:3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/store-backend/node_modules
+      - /app/packages/shared/node_modules
+      - /app/packages/typescript-config/node_modules
+    command: pnpm --filter=@shop-sphere/store-backend dev
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - shop-sphere-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: shop-sphere-web
+    restart: unless-stopped
+    env_file:
+      - .env
+      - apps/store-frontend/.env
+    environment:
+      - NODE_ENV=development
+      - VITE_API_BASE_URL=http://backend:3000
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/store-frontend/node_modules
+      - /app/packages/shared/node_modules
+      - /app/packages/typescript-config/node_modules
+    command: pnpm --filter=@shop-sphere/store-frontend dev
+    depends_on:
+      - backend
+    networks:
+      - shop-sphere-network
+
+networks:
+  shop-sphere-network:
+    driver: bridge
+
+volumes:
+  shop-sphere-data:
+    driver: local

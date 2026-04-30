@@ -1,31 +1,36 @@
 {
-	"$schema": "https://turbo.build/schema.json",
-	"globalDependencies": ["**/.env.*local"],
-	"pipeline": {
-		"build": {
-			"dependsOn": ["^build"],
-			"outputs": ["dist/**", ".next/**", "build/**"]
-		},
-		"dev": {
-			"cache": false,
-			"persistent": true
-		},
-
-		"type-check": {
-			"dependsOn": ["^type-check"]
-		},
-		"db:push": {
-			"cache": false
-		},
-		"db:migrate": {
-			"cache": false
-		},
-		"db:studio": {
-			"cache": false,
-			"persistent": true
-		},
-		"clean": {
-			"cache": false
-		}
-	}
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "NODE_ENV",
+    "DATABASE_URL",
+    "PORT",
+    "CORS_ORIGIN",
+    "JWT_SECRET",
+    "JWT_EXPIRY",
+    "ACCESS_TOKEN_SECRET",
+    "REFRESH_TOKEN_SECRET",
+    "SERVER_URL",
+    "SMTP_HOST",
+    "SMTP_PORT",
+    "SMTP_EMAIL",
+    "SMTP_PASSWORD",
+    "VITE_API_BASE_URL"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "type-check": {
+      "dependsOn": ["^type-check"],
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    }
+  }
 }

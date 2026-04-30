@@ -21,8 +21,7 @@ import {
 import type { ICategory } from "@/feature/category/category.service";
 
 export function AdminCategoryList() {
-	const { data: response, isLoading } = useGetCategories();
-	const categories: ICategory[] = (response?.data as any) || [];
+	const { data: categories = [], isLoading } = useGetCategories();
 
 	const { mutateAsync: createCategory, isPending: isCreating } = useCreateCategory();
 	const { mutateAsync: updateCategory, isPending: isUpdating } = useUpdateCategory();

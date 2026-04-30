@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useAuth } from "@/store/auth.store";
 import { ShoppingBag, Package, Users, Tag } from "lucide-react";
 
-export const Route = createFileRoute("/admin/dashboard")({
+export const Route = createFileRoute("/admin/dashboard/")({
 	component: AdminDashboardPage,
 });
 
@@ -14,7 +14,7 @@ function AdminDashboardPage() {
 		{ label: "Categories", icon: Tag, link: "/admin/categories", color: "text-purple-500", bg: "bg-purple-50" },
 		{ label: "Orders", icon: ShoppingBag, link: "/admin/orders", color: "text-orange-500", bg: "bg-orange-50" },
 		{ label: "Users", icon: Users, link: "/admin/users", color: "text-green-500", bg: "bg-green-50" },
-	];
+	]
 
 	return (
 		<div className="space-y-8">
@@ -57,5 +57,5 @@ function AdminDashboardPage() {
 				</div>
 			</div>
 		</div>
-	);
+	)
 }

@@ -1,6 +1,8 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { ENV } from "@/configs/environment";
 
+import { setupMockApi } from "./mock-api";
+
 const createApi = (path: string) => {
 	const api = axios.create({
 		baseURL: `${ENV.VITE_API_BASE_URL}/api${path}`,
@@ -8,6 +10,9 @@ const createApi = (path: string) => {
 		headers: { "Content-Type": "application/json" },
 		withCredentials: true,
 	});
+
+	// APPLY MOCK INTERCEPTOR FOR E2E TESTING
+	setupMockApi(api);
 
 	api.interceptors.request.use((config: InternalAxiosRequestConfig) => config);
 

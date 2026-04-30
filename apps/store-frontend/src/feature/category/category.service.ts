@@ -16,7 +16,7 @@ export const getCategories = async () => {
 		method: METHODS.GET,
 		url: "/",
 	});
-	return data;
+	return data.data;
 };
 
 export const createCategory = async (formData: FormData) => {

@@ -14,7 +14,7 @@ export const Route = createFileRoute("/wishlist")({
 
 function WishlistPage() {
 	const { isAuthenticated } = useAuth();
-	const { items } = useWishlistStore();
+	const items = useWishlistStore((state) => state.items);
 	const addToCartLocal = useCartStore((state) => state.addToCart);
 	const { mutate: addAllToCartApi } = useAddAllToCart();
 
@@ -25,11 +25,8 @@ function WishlistPage() {
 		items.forEach((item) => addToCartLocal(item));
 
 		if (isAuthenticated) {
-			const cartItems = items.map((item) => ({
-				productId: item.id,
-				quantity: 1,
-			}));
-			addAllToCartApi(cartItems);
+			const productIds = items.map((item) => item._id);
+			addAllToCartApi({ productIds });
 		} else {
 			toast.success("All items moved to local cart");
 		}
@@ -66,7 +63,7 @@ function WishlistPage() {
 			) : (
 				<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 					{items.map((item) => (
-						<ProductCard key={item.id} {...item} />
+						<ProductCard key={item._id} {...item} />
 					))}
 				</div>
 			)}

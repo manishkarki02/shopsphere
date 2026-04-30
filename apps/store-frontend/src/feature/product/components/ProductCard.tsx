@@ -36,12 +36,9 @@ export function ProductCard({
 }: ProductCardProps) {
 	const { isAuthenticated } = useAuth();
 	const addToCartLocal = useCartStore((state) => state.addToCart);
-	const { isInWishlist, addToWishlistLocal, removeFromWishlistLocal } =
-		useWishlistStore((state) => ({
-			isInWishlist: state.isInWishlist,
-			addToWishlistLocal: state.addToWishlist,
-			removeFromWishlistLocal: state.removeFromWishlist,
-		}));
+	const isInWishlist = useWishlistStore((state) => state.isInWishlist);
+	const addToWishlistLocal = useWishlistStore((state) => state.addToWishlist);
+	const removeFromWishlistLocal = useWishlistStore((state) => state.removeFromWishlist);
 
 	const { mutate: addToCartApi } = useAddToCart();
 	const { mutate: addToWishlistApi } = useAddToWishlist();

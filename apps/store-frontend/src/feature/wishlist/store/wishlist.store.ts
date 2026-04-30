@@ -16,7 +16,7 @@ export const useWishlistStore = create<WishlistState>()(
 			items: [],
 			addToWishlist: (product) => {
 				set((state) => {
-					if (!state.items.find((item) => item.id === product.id)) {
+					if (!state.items.find((item) => item._id === product._id)) {
 						return { items: [...state.items, product] };
 					}
 					return state;
@@ -24,11 +24,11 @@ export const useWishlistStore = create<WishlistState>()(
 			},
 			removeFromWishlist: (productId) => {
 				set((state) => ({
-					items: state.items.filter((item) => item.id !== productId),
+					items: state.items.filter((item) => item._id !== productId),
 				}));
 			},
 			isInWishlist: (productId) => {
-				return get().items.some((item) => item.id === productId);
+				return get().items.some((item) => item._id === productId);
 			},
 			clearWishlist: () => set({ items: [] }),
 		}),

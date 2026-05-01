@@ -1,14 +1,29 @@
-import type { NextFunction, Request, Response } from "express";
-import type { ZodObject, z } from "zod";
+import type { Request, RequestHandler } from "express";
 
-// Use this to type controllers with validated request shapes
-export type ValidatedRequestHandler<T extends ZodObject<any>> = (
-	req: Request<
-		z.infer<T> extends { params: infer P } ? P : {},
-		any,
-		z.infer<T> extends { body: infer B } ? B : {},
-		z.infer<T> extends { query: infer Q } ? Q : {}
-	>,
-	res: Response,
-	next: NextFunction,
-) => Promise<any>;
+/*
+ * @example
+ * import { z } from "zod";
+ * const loginSchema = z.object({
+ *  body: z.object({
+ *  email: z.string().email(),
+ *  password: z.string().min(8),
+ *  })
+ * });
+ *
+ * type LoginSchema = z.infer<typeof loginSchema>;
+ * export const loginController: ValidatedRequestHandler<LoginSchema> = async (req, res) => {}
+ *
+ */
+export type ValidatedRequestHandler<
+	TSchema extends { params?: any; body?: any; query?: any } = {
+		params?: any;
+		body?: any;
+		query?: any;
+	},
+	TResponse = any,
+> = RequestHandler<
+	TSchema["params"] extends object ? TSchema["params"] : Request["params"],
+	TResponse,
+	TSchema["body"] extends object ? TSchema["body"] : Request["body"],
+	TSchema["query"] extends object ? TSchema["query"] : Request["query"]
+>;

@@ -31,10 +31,6 @@ router.patch(
 );
 
 // Customer — place an order
-router.post(
-	"/",
-	jwtAuthMiddleware,
-	catchAsync(orderController.createOrder),
-);
+router.post("/", jwtAuthMiddleware, catchAsync(orderController.createOrder));
 
 export default router;

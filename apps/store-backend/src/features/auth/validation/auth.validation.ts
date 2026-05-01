@@ -1,12 +1,12 @@
 import {
-	resendOtpBodySchema,
-	signInBodySchema,
-	signUpBodySchema,
-	verifyEmailBodySchema,
 	type ResendOtpBody,
+	resendOtpBodySchema,
 	type SignInBody,
 	type SignUpBody,
+	signInBodySchema,
+	signUpBodySchema,
 	type VerifyEmailBody,
+	verifyEmailBodySchema,
 } from "@shop-sphere/shared";
 import { z } from "zod";
 

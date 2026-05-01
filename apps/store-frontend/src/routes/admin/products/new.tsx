@@ -1,6 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { ProductForm, type ProductFormValues } from "@/feature/product/components/admin/ProductForm";
+import {
+	ProductForm,
+	type ProductFormValues,
+} from "@/feature/product/components/admin/ProductForm";
 import { useCreateProduct } from "@/feature/product/hooks/useProductQuery";
 
 export const Route = createFileRoute("/admin/products/new")({
@@ -14,7 +17,7 @@ function RouteComponent() {
 	const handleSubmit = async (values: ProductFormValues, files: File[]) => {
 		try {
 			const formData = new FormData();
-			
+
 			// Append all text fields
 			Object.entries(values).forEach(([key, value]) => {
 				if (value !== undefined && value !== null) {
@@ -39,7 +42,9 @@ function RouteComponent() {
 		<div className="space-y-6">
 			<div>
 				<h1 className="text-3xl font-bold tracking-tight">Create Product</h1>
-				<p className="text-muted-foreground">Add a new product to your catalog.</p>
+				<p className="text-muted-foreground">
+					Add a new product to your catalog.
+				</p>
 			</div>
 			<ProductForm onSubmit={handleSubmit} isLoading={isPending} />
 		</div>

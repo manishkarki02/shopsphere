@@ -14,7 +14,7 @@ export function NewArrivals() {
 				<h2 className="text-3xl font-bold tracking-tight">New Arrival</h2>
 			</div>
 
-			<div className="relative aspect-[2/1] w-full overflow-hidden rounded-md bg-black">
+			<div className="relative aspect-2/1 w-full overflow-hidden rounded-md bg-black">
 				{/* Simplified mock UI for New Arrivals layout representing the Bento grid */}
 				{isLoading ? (
 					<Skeleton className="h-full w-full opacity-50" />
@@ -34,7 +34,7 @@ export function NewArrivals() {
 									<h3 className="text-lg font-bold text-white mb-2">
 										{p.name}
 									</h3>
-									<p className="text-sm text-white/80 max-w-[200px] line-clamp-2">
+									<p className="text-sm text-white/80 max-w-50 line-clamp-2">
 										{p.description}
 									</p>
 									<a

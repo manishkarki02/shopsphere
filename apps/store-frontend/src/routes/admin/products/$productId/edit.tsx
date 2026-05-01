@@ -1,8 +1,14 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import { ProductForm, type ProductFormValues } from "@/feature/product/components/admin/ProductForm";
-import { useUpdateProduct, useGetProductParams } from "@/feature/product/hooks/useProductQuery";
+import { toast } from "sonner";
+import {
+	ProductForm,
+	type ProductFormValues,
+} from "@/feature/product/components/admin/ProductForm";
+import {
+	useGetProductParams,
+	useUpdateProduct,
+} from "@/feature/product/hooks/useProductQuery";
 
 export const Route = createFileRoute("/admin/products/$productId/edit")({
 	component: RouteComponent,
@@ -11,13 +17,14 @@ export const Route = createFileRoute("/admin/products/$productId/edit")({
 function RouteComponent() {
 	const { productId } = Route.useParams();
 	const navigate = useNavigate();
-	const { data: product, isLoading: isFetching } = useGetProductParams(productId);
+	const { data: product, isLoading: isFetching } =
+		useGetProductParams(productId);
 	const { mutateAsync: updateProduct, isPending } = useUpdateProduct();
 
 	const handleSubmit = async (values: ProductFormValues, files: File[]) => {
 		try {
 			const formData = new FormData();
-			
+
 			// Append all text fields
 			Object.entries(values).forEach(([key, value]) => {
 				if (value !== undefined && value !== null) {
@@ -54,9 +61,15 @@ function RouteComponent() {
 		<div className="space-y-6">
 			<div>
 				<h1 className="text-3xl font-bold tracking-tight">Edit Product</h1>
-				<p className="text-muted-foreground">Update the details of your product.</p>
+				<p className="text-muted-foreground">
+					Update the details of your product.
+				</p>
 			</div>
-			<ProductForm initialData={product} onSubmit={handleSubmit} isLoading={isPending} />
+			<ProductForm
+				initialData={product}
+				onSubmit={handleSubmit}
+				isLoading={isPending}
+			/>
 		</div>
 	);
 }

@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCustomQuery } from "@/common/hooks/useCustomQuery";
 import {
-	getCategories,
 	createCategory,
-	updateCategory,
 	deleteCategory,
+	getCategories,
+	updateCategory,
 } from "../category.service";
 
 export const CATEGORY_KEYS = {

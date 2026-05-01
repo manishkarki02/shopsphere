@@ -5,7 +5,12 @@ export const createProductBodySchema = z.object({
 	productName: z.string().min(1, "productName is required."),
 	description: z.string().min(1, "description is required."),
 	color: z.union([z.string(), z.array(z.string())]).optional(),
-	price: z.number().or(z.string().regex(/^\d+(\.\d+)?$/).transform(Number)),
+	price: z.number().or(
+		z
+			.string()
+			.regex(/^\d+(\.\d+)?$/)
+			.transform(Number),
+	),
 	discountPercentage: z
 		.number()
 		.optional()
@@ -31,7 +36,12 @@ export const updateProductBodySchema = z.object({
 	price: z
 		.number()
 		.optional()
-		.or(z.string().regex(/^\d+(\.\d+)?$/).transform(Number)),
+		.or(
+			z
+				.string()
+				.regex(/^\d+(\.\d+)?$/)
+				.transform(Number),
+		),
 	discountPercentage: z
 		.number()
 		.optional()
@@ -59,4 +69,6 @@ export const updateProductStatusBodySchema = z.object({
 
 export type CreateProductBody = z.infer<typeof createProductBodySchema>;
 export type UpdateProductBody = z.infer<typeof updateProductBodySchema>;
-export type UpdateProductStatusBody = z.infer<typeof updateProductStatusBodySchema>;
+export type UpdateProductStatusBody = z.infer<
+	typeof updateProductStatusBodySchema
+>;

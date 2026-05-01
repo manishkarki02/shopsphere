@@ -74,11 +74,10 @@ export default function ProductDetailsPage() {
 					</div>
 
 					<div className="text-2xl pt-2">
-						${
-							discountPercentage && discountPercentage > 0
-								? price - (price * discountPercentage) / 100
-								: price
-						}
+						$
+						{discountPercentage && discountPercentage > 0
+							? price - (price * discountPercentage) / 100
+							: price}
 					</div>
 
 					<p className="text-sm leading-relaxed border-b pb-6">{description}</p>

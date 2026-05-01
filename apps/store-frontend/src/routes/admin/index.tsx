@@ -1,18 +1,30 @@
-import { createFileRoute, Outlet, redirect, Link } from "@tanstack/react-router";
-import { LayoutDashboard, ShoppingBag, Package, Users, LogOut, Settings } from "lucide-react";
+import {
+	createFileRoute,
+	Link,
+	Outlet,
+	redirect,
+} from "@tanstack/react-router";
+import {
+	LayoutDashboard,
+	LogOut,
+	Package,
+	Settings,
+	ShoppingBag,
+	Users,
+} from "lucide-react";
 import type { AuthContext } from "@/store/auth.store";
 
 export const Route = createFileRoute("/admin/")({
-// 	beforeLoad: ({ context }) => {
-// 		const auth = (context as { auth: AuthContext }).auth;
-// 		if (!auth.isAuthenticated) {
-// 			throw redirect({ to: "/auth/login", search: { redirect: "/admin" } });
-// 		}
-// 		const role = auth.session?.role;
-// 		if (role !== "STAFF" && role !== "ADMIN") {
-// 			throw redirect({ to: "/" });
-// 		}
-// 	},
+	// 	beforeLoad: ({ context }) => {
+	// 		const auth = (context as { auth: AuthContext }).auth;
+	// 		if (!auth.isAuthenticated) {
+	// 			throw redirect({ to: "/auth/login", search: { redirect: "/admin" } });
+	// 		}
+	// 		const role = auth.session?.role;
+	// 		if (role !== "STAFF" && role !== "ADMIN") {
+	// 			throw redirect({ to: "/" });
+	// 		}
+	// 	},
 	component: AdminLayout,
 });
 
@@ -76,5 +88,5 @@ function AdminLayout() {
 				</main>
 			</div>
 		</div>
-	)
+	);
 }

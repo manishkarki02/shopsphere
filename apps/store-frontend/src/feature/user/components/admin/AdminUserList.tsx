@@ -1,17 +1,20 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Loader2, PlusCircle } from "lucide-react";
 import { useState } from "react";
-import { PlusCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useCustomQuery } from "@/common/hooks/useCustomQuery";
+import type { ApiResponse } from "@/common/types/api-response.type";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
 	Dialog,
 	DialogContent,
+	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogFooter,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
 	Select,
 	SelectContent,
@@ -20,11 +23,8 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useCustomQuery } from "@/common/hooks/useCustomQuery";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { METHODS } from "@/enums/request-methods.enum";
 import createApi from "@/utils/axios";
-import type { ApiResponse } from "@/common/types/api-response.type";
 
 const userApi = createApi("/users");
 
@@ -102,7 +102,8 @@ export function AdminUserList() {
 			queryClient.invalidateQueries({ queryKey: USER_KEYS.list() });
 			toast.success("User created successfully");
 		},
-		onError: (err: any) => toast.error(err?.response?.data?.message || "Failed to create user"),
+		onError: (err: any) =>
+			toast.error(err?.response?.data?.message || "Failed to create user"),
 	});
 
 	const { mutate: changeRole } = useMutation({
@@ -156,7 +157,9 @@ export function AdminUserList() {
 			<div className="flex items-center justify-between">
 				<div>
 					<h1 className="text-3xl font-bold tracking-tight">Users & Staff</h1>
-					<p className="text-muted-foreground">Manage user accounts and roles</p>
+					<p className="text-muted-foreground">
+						Manage user accounts and roles
+					</p>
 				</div>
 				<Button onClick={() => setIsCreateOpen(true)}>
 					<PlusCircle className="mr-2 h-4 w-4" />
@@ -168,96 +171,115 @@ export function AdminUserList() {
 				<table className="w-full text-sm">
 					<thead className="bg-muted/50 text-left">
 						<tr>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Name</th>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Email</th>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Role</th>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Status</th>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Change Role</th>
-							<th className="px-4 py-3 font-semibold text-muted-foreground text-right">Actions</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Name
+							</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Email
+							</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Role
+							</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Status
+							</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Change Role
+							</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground text-right">
+								Actions
+							</th>
 						</tr>
 					</thead>
 					<tbody className="divide-y">
-						{isLoading
-							? Array.from({ length: 8 }).map((_, i) => (
-									<tr key={i}>
-										{[...Array(6)].map((__, j) => (
-											<td key={j} className="px-4 py-3">
-												<Skeleton className="h-4 w-full" />
-											</td>
-										))}
-									</tr>
-								))
-							: users.length === 0
-								? (
-										<tr>
-											<td colSpan={6} className="px-4 py-12 text-center text-muted-foreground">
-												No users found.
-											</td>
-										</tr>
-									)
-								: users.map((u) => (
-										<tr key={u._id} className="hover:bg-muted/50 transition-colors">
-											<td className="px-4 py-3 font-medium">
-												{u.firstName && u.lastName
-													? `${u.firstName} ${u.lastName}`
-													: u.name || "—"}
-											</td>
-											<td className="px-4 py-3 text-muted-foreground">{u.email}</td>
-											<td className="px-4 py-3">
-												<Badge variant="outline" className={roleColors[u.role]}>
-													{u.role}
-												</Badge>
-											</td>
-											<td className="px-4 py-3">
-												<Badge
-													variant="outline"
-													className={u.isVerified
-														? "bg-green-50 text-green-700 border-green-200"
-														: "bg-red-50 text-red-700 border-red-200"}
-												>
-													{u.isVerified ? "Active" : "Blocked"}
-												</Badge>
-											</td>
-											<td className="px-4 py-3">
-												<Select
-													defaultValue={u.role}
-													onValueChange={(val) =>
-														changeRole({ id: u._id, role: val as UserRole })
-													}
-												>
-													<SelectTrigger className="w-32 h-8 text-xs">
-														<SelectValue />
-													</SelectTrigger>
-													<SelectContent>
-														{(["CUSTOMER", "STAFF", "ADMIN"] as UserRole[]).map((r) => (
-															<SelectItem key={r} value={r} className="text-xs">
-																{r}
-															</SelectItem>
-														))}
-													</SelectContent>
-												</Select>
-											</td>
-											<td className="px-4 py-3 text-right">
-												<Button
-													size="sm"
-													variant={u.isVerified ? "destructive" : "outline"}
-													disabled={isToggling && blockingId === u._id}
-													onClick={() => {
-														setBlockingId(u._id);
-														toggleBlock({ id: u._id, isBlocked: u.isVerified });
-													}}
-												>
-													{isToggling && blockingId === u._id ? (
-														<Loader2 className="h-3.5 w-3.5 animate-spin" />
-													) : u.isVerified ? (
-														"Block"
-													) : (
-														"Unblock"
-													)}
-												</Button>
-											</td>
-										</tr>
+						{isLoading ? (
+							Array.from({ length: 8 }).map((_, i) => (
+								<tr key={i}>
+									{[...Array(6)].map((__, j) => (
+										<td key={j} className="px-4 py-3">
+											<Skeleton className="h-4 w-full" />
+										</td>
 									))}
+								</tr>
+							))
+						) : users.length === 0 ? (
+							<tr>
+								<td
+									colSpan={6}
+									className="px-4 py-12 text-center text-muted-foreground"
+								>
+									No users found.
+								</td>
+							</tr>
+						) : (
+							users.map((u) => (
+								<tr key={u._id} className="hover:bg-muted/50 transition-colors">
+									<td className="px-4 py-3 font-medium">
+										{u.firstName && u.lastName
+											? `${u.firstName} ${u.lastName}`
+											: u.name || "—"}
+									</td>
+									<td className="px-4 py-3 text-muted-foreground">{u.email}</td>
+									<td className="px-4 py-3">
+										<Badge variant="outline" className={roleColors[u.role]}>
+											{u.role}
+										</Badge>
+									</td>
+									<td className="px-4 py-3">
+										<Badge
+											variant="outline"
+											className={
+												u.isVerified
+													? "bg-green-50 text-green-700 border-green-200"
+													: "bg-red-50 text-red-700 border-red-200"
+											}
+										>
+											{u.isVerified ? "Active" : "Blocked"}
+										</Badge>
+									</td>
+									<td className="px-4 py-3">
+										<Select
+											defaultValue={u.role}
+											onValueChange={(val) =>
+												changeRole({ id: u._id, role: val as UserRole })
+											}
+										>
+											<SelectTrigger className="w-32 h-8 text-xs">
+												<SelectValue />
+											</SelectTrigger>
+											<SelectContent>
+												{(["CUSTOMER", "STAFF", "ADMIN"] as UserRole[]).map(
+													(r) => (
+														<SelectItem key={r} value={r} className="text-xs">
+															{r}
+														</SelectItem>
+													),
+												)}
+											</SelectContent>
+										</Select>
+									</td>
+									<td className="px-4 py-3 text-right">
+										<Button
+											size="sm"
+											variant={u.isVerified ? "destructive" : "outline"}
+											disabled={isToggling && blockingId === u._id}
+											onClick={() => {
+												setBlockingId(u._id);
+												toggleBlock({ id: u._id, isBlocked: u.isVerified });
+											}}
+										>
+											{isToggling && blockingId === u._id ? (
+												<Loader2 className="h-3.5 w-3.5 animate-spin" />
+											) : u.isVerified ? (
+												"Block"
+											) : (
+												"Unblock"
+											)}
+										</Button>
+									</td>
+								</tr>
+							))
+						)}
 					</tbody>
 				</table>
 			</div>
@@ -274,7 +296,9 @@ export function AdminUserList() {
 								id="name"
 								placeholder="John Doe"
 								value={userData.name}
-								onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+								onChange={(e) =>
+									setUserData({ ...userData, name: e.target.value })
+								}
 							/>
 						</div>
 						<div className="grid gap-2">
@@ -284,7 +308,9 @@ export function AdminUserList() {
 								type="email"
 								placeholder="john@example.com"
 								value={userData.email}
-								onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+								onChange={(e) =>
+									setUserData({ ...userData, email: e.target.value })
+								}
 							/>
 						</div>
 						<div className="grid gap-2">
@@ -294,14 +320,18 @@ export function AdminUserList() {
 								type="password"
 								placeholder="••••••••"
 								value={userData.password}
-								onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+								onChange={(e) =>
+									setUserData({ ...userData, password: e.target.value })
+								}
 							/>
 						</div>
 						<div className="grid gap-2">
 							<Label htmlFor="role">Role</Label>
 							<Select
 								value={userData.role}
-								onValueChange={(val) => setUserData({ ...userData, role: val as UserRole })}
+								onValueChange={(val) =>
+									setUserData({ ...userData, role: val as UserRole })
+								}
 							>
 								<SelectTrigger id="role">
 									<SelectValue placeholder="Select role" />

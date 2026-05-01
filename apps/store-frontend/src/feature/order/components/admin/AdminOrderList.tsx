@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ShoppingBag } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { useCustomQuery } from "@/common/hooks/useCustomQuery";
+import type { ApiResponse } from "@/common/types/api-response.type";
 import { Badge } from "@/components/ui/badge";
-
 import {
 	Select,
 	SelectContent,
@@ -11,16 +13,19 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useCustomQuery } from "@/common/hooks/useCustomQuery";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { METHODS } from "@/enums/request-methods.enum";
 import createApi from "@/utils/axios";
-import type { ApiResponse } from "@/common/types/api-response.type";
 
 const orderApi = createApi("/orders");
 
-const ORDER_STATUSES = ["PENDING", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"] as const;
-type OrderStatus = typeof ORDER_STATUSES[number];
+const ORDER_STATUSES = [
+	"PENDING",
+	"PROCESSING",
+	"SHIPPED",
+	"DELIVERED",
+	"CANCELLED",
+] as const;
+type OrderStatus = (typeof ORDER_STATUSES)[number];
 
 interface IOrderItem {
 	productId: string;
@@ -54,7 +59,11 @@ const ORDER_KEYS = {
 
 const getOrders = async (page: number) => {
 	const { data }: { data: ApiResponse<{ orders: IOrder[]; total: number }> } =
-		await orderApi({ method: METHODS.GET, url: "/", params: { page, limit: 20 } });
+		await orderApi({
+			method: METHODS.GET,
+			url: "/",
+			params: { page, limit: 20 },
+		});
 	return data.data;
 };
 
@@ -107,77 +116,98 @@ export function AdminOrderList() {
 				<table className="w-full text-sm">
 					<thead className="bg-muted/50 text-left">
 						<tr>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Order ID</th>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Items</th>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Total</th>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Date</th>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Status</th>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Update Status</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Order ID
+							</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Items
+							</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Total
+							</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Date
+							</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Status
+							</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Update Status
+							</th>
 						</tr>
 					</thead>
 					<tbody className="divide-y">
-						{isLoading
-							? Array.from({ length: 8 }).map((_, i) => (
-									<tr key={i}>
-										{[...Array(6)].map((__, j) => (
-											<td key={j} className="px-4 py-3">
-												<Skeleton className="h-4 w-full" />
-											</td>
-										))}
-									</tr>
-								))
-							: orders.length === 0
-								? (
-										<tr>
-											<td colSpan={6} className="px-4 py-12 text-center text-muted-foreground">
-												No orders found.
-											</td>
-										</tr>
-									)
-								: orders.map((order) => (
-										<tr key={order._id} className="hover:bg-muted/50 transition-colors">
-											<td className="px-4 py-3 font-mono text-xs">
-												#{order._id.slice(-8).toUpperCase()}
-											</td>
-											<td className="px-4 py-3">
-												{order.items.length} item{order.items.length !== 1 && "s"}
-											</td>
-											<td className="px-4 py-3 font-semibold">
-												${order.totalAmount.toFixed(2)}
-											</td>
-											<td className="px-4 py-3 text-muted-foreground text-xs">
-												{new Date(order.createdAt).toLocaleDateString()}
-											</td>
-											<td className="px-4 py-3">
-												<Badge
-													variant="outline"
-													className={statusColors[order.status]}
-												>
-													{order.status}
-												</Badge>
-											</td>
-											<td className="px-4 py-3">
-												<Select
-													defaultValue={order.status}
-													onValueChange={(val) =>
-														patchStatus({ id: order._id, status: val as OrderStatus })
-													}
-													disabled={isPending}
-												>
-													<SelectTrigger className="w-36 h-8 text-xs">
-														<SelectValue />
-													</SelectTrigger>
-													<SelectContent>
-														{ORDER_STATUSES.map((s) => (
-															<SelectItem key={s} value={s} className="text-xs">
-																{s}
-															</SelectItem>
-														))}
-													</SelectContent>
-												</Select>
-											</td>
-										</tr>
+						{isLoading ? (
+							Array.from({ length: 8 }).map((_, i) => (
+								<tr key={i}>
+									{[...Array(6)].map((__, j) => (
+										<td key={j} className="px-4 py-3">
+											<Skeleton className="h-4 w-full" />
+										</td>
 									))}
+								</tr>
+							))
+						) : orders.length === 0 ? (
+							<tr>
+								<td
+									colSpan={6}
+									className="px-4 py-12 text-center text-muted-foreground"
+								>
+									No orders found.
+								</td>
+							</tr>
+						) : (
+							orders.map((order) => (
+								<tr
+									key={order._id}
+									className="hover:bg-muted/50 transition-colors"
+								>
+									<td className="px-4 py-3 font-mono text-xs">
+										#{order._id.slice(-8).toUpperCase()}
+									</td>
+									<td className="px-4 py-3">
+										{order.items.length} item{order.items.length !== 1 && "s"}
+									</td>
+									<td className="px-4 py-3 font-semibold">
+										${order.totalAmount.toFixed(2)}
+									</td>
+									<td className="px-4 py-3 text-muted-foreground text-xs">
+										{new Date(order.createdAt).toLocaleDateString()}
+									</td>
+									<td className="px-4 py-3">
+										<Badge
+											variant="outline"
+											className={statusColors[order.status]}
+										>
+											{order.status}
+										</Badge>
+									</td>
+									<td className="px-4 py-3">
+										<Select
+											defaultValue={order.status}
+											onValueChange={(val) =>
+												patchStatus({
+													id: order._id,
+													status: val as OrderStatus,
+												})
+											}
+											disabled={isPending}
+										>
+											<SelectTrigger className="w-36 h-8 text-xs">
+												<SelectValue />
+											</SelectTrigger>
+											<SelectContent>
+												{ORDER_STATUSES.map((s) => (
+													<SelectItem key={s} value={s} className="text-xs">
+														{s}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									</td>
+								</tr>
+							))
+						)}
 					</tbody>
 				</table>
 			</div>

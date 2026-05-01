@@ -20,7 +20,10 @@ export const getOrderById: RequestHandler = async (req, res) => {
 };
 
 export const updateOrderStatus: RequestHandler = async (req, res) => {
-	const order = await orderService.updateOrderStatus(String(req.params.id), req.body);
+	const order = await orderService.updateOrderStatus(
+		String(req.params.id),
+		req.body,
+	);
 	return ApiResponse.success(res, httpStatus.OK, {
 		message: "Order status updated",
 		data: order,

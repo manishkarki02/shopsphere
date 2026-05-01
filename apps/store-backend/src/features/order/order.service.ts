@@ -1,7 +1,7 @@
+import type { UpdateOrderStatusBody } from "@shop-sphere/shared";
 import httpStatus from "http-status";
 import { ApiError } from "@/common/utils/response.util";
 import { Order } from "./order.model";
-import type { UpdateOrderStatusBody } from "@shop-sphere/shared";
 
 export async function getAllOrders(query: any) {
 	const page = parseInt(query.page as string) || 1;

@@ -1,5 +1,4 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { Heart, Settings, User } from "lucide-react";
 
 export const Route = createFileRoute("/user")({
 	component: UserLayout,

@@ -5,7 +5,7 @@ import createApi from "@/utils/axios";
 
 // We'll define IProduct locally until the shared types are fully integrated
 export interface IProduct {
-	_id: string;
+	id: string;
 	productName: string;
 	description: string;
 	price: number;

@@ -1,4 +1,7 @@
-import { addWishlistBodySchema, type AddWishlistBody } from "@shop-sphere/shared";
+import {
+	type AddWishlistBody,
+	addWishlistBodySchema,
+} from "@shop-sphere/shared";
 import mongoose from "mongoose";
 import { z } from "zod";
 

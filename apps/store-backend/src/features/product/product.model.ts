@@ -1,21 +1,12 @@
-import mongoose, { type Document } from "mongoose";
+import type { IProduct } from "@shop-sphere/shared";
+import mongoose from "mongoose";
 
-export interface IProduct extends Document {
-	productName: string;
-	description: string;
-	price: number;
-	color: string[];
-	discountPercentage: number;
-	rating: number;
+interface IProductDocument extends Omit<IProduct, "category" | "reviews"> {
 	category: mongoose.Types.ObjectId;
-	images: string[];
-	thumbnail: string;
-	stockQuantity: number;
-	isActive: boolean;
-	reviews: any[]; // Or add a separate review schema if needed, kept as any for now per original structure
+	reviews: mongoose.Types.ObjectId[];
 }
 
-const productSchema = new mongoose.Schema<IProduct>(
+const productSchema = new mongoose.Schema<IProductDocument>(
 	{
 		productName: {
 			type: String,
@@ -58,14 +49,20 @@ const productSchema = new mongoose.Schema<IProduct>(
 			type: Boolean,
 			default: true,
 		},
-		reviews: {
-			type: [mongoose.Schema.Types.Mixed] as any,
-			default: [],
-		},
+		reviews: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Reviews",
+				default: [],
+			},
+		],
 	},
 	{
 		timestamps: true,
 	},
 );
 
-export const Product = mongoose.model<IProduct>("Products", productSchema);
+export const Product = mongoose.model<IProductDocument>(
+	"Products",
+	productSchema,
+);

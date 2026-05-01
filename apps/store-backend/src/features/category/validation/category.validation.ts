@@ -1,8 +1,8 @@
 import {
-	addCategoryBodySchema,
-	updateCategoryBodySchema,
 	type AddCategoryBody,
+	addCategoryBodySchema,
 	type UpdateCategoryBody,
+	updateCategoryBodySchema,
 } from "@shop-sphere/shared";
 import mongoose from "mongoose";
 import { z } from "zod";

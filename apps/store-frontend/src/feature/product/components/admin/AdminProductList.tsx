@@ -1,13 +1,17 @@
-import { useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAdminProducts } from "@/feature/product/hooks/useProductQuery";
 import type { IProduct } from "@/feature/product/product.service";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export function AdminProductList() {
 	const [page, setPage] = useState(1);
-	const { data, isLoading } = useAdminProducts({ page, limit: 12, sortOrder: "desc" });
+	const { data, isLoading } = useAdminProducts({
+		page,
+		limit: 12,
+		sortOrder: "desc",
+	});
 
 	const products = data?.products || [];
 	const total = data?.total || 0;
@@ -37,29 +41,49 @@ export function AdminProductList() {
 						{isLoading ? (
 							Array.from({ length: 5 }).map((_, i) => (
 								<tr key={i}>
-									<td className="px-4 py-3"><Skeleton className="h-4 w-32" /></td>
-									<td className="px-4 py-3"><Skeleton className="h-4 w-16" /></td>
-									<td className="px-4 py-3"><Skeleton className="h-4 w-12" /></td>
-									<td className="px-4 py-3"><Skeleton className="h-4 w-16" /></td>
-									<td className="px-4 py-3"><Skeleton className="h-4 w-20 ml-auto" /></td>
+									<td className="px-4 py-3">
+										<Skeleton className="h-4 w-32" />
+									</td>
+									<td className="px-4 py-3">
+										<Skeleton className="h-4 w-16" />
+									</td>
+									<td className="px-4 py-3">
+										<Skeleton className="h-4 w-12" />
+									</td>
+									<td className="px-4 py-3">
+										<Skeleton className="h-4 w-16" />
+									</td>
+									<td className="px-4 py-3">
+										<Skeleton className="h-4 w-20 ml-auto" />
+									</td>
 								</tr>
 							))
 						) : products.length === 0 ? (
 							<tr>
-								<td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+								<td
+									colSpan={5}
+									className="px-4 py-8 text-center text-muted-foreground"
+								>
 									No products found
 								</td>
 							</tr>
 						) : (
 							products.map((product: IProduct) => (
-								<tr key={product._id} className="hover:bg-muted/50 transition-colors">
-									<td className="px-4 py-3 font-medium">{product.productName}</td>
+								<tr
+									key={product._id}
+									className="hover:bg-muted/50 transition-colors"
+								>
+									<td className="px-4 py-3 font-medium">
+										{product.productName}
+									</td>
 									<td className="px-4 py-3 font-medium text-muted-foreground">
 										${product.price ? product.price.toFixed(2) : "0.00"}
 									</td>
 									<td className="px-4 py-3">{product.stockQuantity}</td>
 									<td className="px-4 py-3">
-										<span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${product.isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+										<span
+											className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${product.isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
+										>
 											{product.isActive ? "Active" : "Disabled"}
 										</span>
 									</td>

@@ -18,4 +18,3 @@ router.use("/carts", cartRouter);
 router.use("/wishlists", wishlistRouter);
 
 export default router;
-

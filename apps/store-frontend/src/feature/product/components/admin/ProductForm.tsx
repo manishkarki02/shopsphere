@@ -1,9 +1,9 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createProductBodySchema } from "@shop-sphere/shared";
+import { Loader2, Upload } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, Upload } from "lucide-react";
-import { createProductBodySchema } from "@shop-sphere/shared";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -14,7 +14,6 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
 	Select,
 	SelectContent,
@@ -22,6 +21,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { useGetCategories } from "@/feature/category/hooks/useCategoryQuery";
 import type { IProduct } from "../../product.service";
 
@@ -38,13 +38,17 @@ interface ProductFormProps {
 	isLoading?: boolean;
 }
 
-export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormProps) {
+export function ProductForm({
+	initialData,
+	onSubmit,
+	isLoading,
+}: ProductFormProps) {
 	const { data: categoriesResponse } = useGetCategories();
 	const categories = categoriesResponse?.data || [];
 
 	const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 	const [previewUrls, setPreviewUrls] = useState<string[]>(
-		initialData?.images || []
+		initialData?.images || [],
 	);
 
 	const form = useForm<any>({
@@ -127,7 +131,9 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
 												type="number"
 												step="0.01"
 												{...field}
-												onChange={(e) => field.onChange(parseFloat(e.target.value))}
+												onChange={(e) =>
+													field.onChange(parseFloat(e.target.value))
+												}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -145,7 +151,9 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
 											<Input
 												type="number"
 												{...field}
-												onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
+												onChange={(e) =>
+													field.onChange(parseInt(e.target.value, 10))
+												}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -165,7 +173,9 @@ export function ProductForm({ initialData, onSubmit, isLoading }: ProductFormPro
 											<Input
 												type="number"
 												{...field}
-												onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
+												onChange={(e) =>
+													field.onChange(parseInt(e.target.value, 10))
+												}
 											/>
 										</FormControl>
 										<FormMessage />

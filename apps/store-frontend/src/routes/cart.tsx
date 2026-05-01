@@ -89,7 +89,7 @@ function CartPage() {
 				<div className="lg:col-span-2">
 					<div className="rounded-md border bg-card">
 						{/* Header */}
-						<div className="grid grid-cols-12 gap-4 p-4 border-b text-sm font-medium text-muted-foreground hidden md:grid">
+						<div className="grid grid-cols-12 gap-4 p-4 border-b text-sm font-medium text-muted-foreground md:grid">
 							<div className="col-span-6">Product</div>
 							<div className="col-span-2 text-center">Price</div>
 							<div className="col-span-2 text-center">Quantity</div>
@@ -105,7 +105,9 @@ function CartPage() {
 								>
 									<div className="col-span-1 md:col-span-6 flex items-center gap-4 relative">
 										<button
-											onClick={() => handleRemoveItem(item._id, item.productName)}
+											onClick={() =>
+												handleRemoveItem(item._id, item.productName)
+											}
 											className="absolute -top-2 -left-2 md:static text-destructive hover:bg-destructive/10 p-1 rounded-full transition-colors"
 										>
 											<Trash2 className="w-4 h-4" />
@@ -128,10 +130,9 @@ function CartPage() {
 											Price:
 										</span>
 										<span>
-											$
-											{/* @ts-ignore */}
+											${/* @ts-ignore */}
 											{item.discountPrice && item.discountPrice < item.price
-												? item.discountPrice // @ts-ignore
+												? item.discountPrice
 												: item.price}
 										</span>
 									</div>
@@ -175,11 +176,13 @@ function CartPage() {
 										</span>
 										<span>
 											$
-											{(
-												(/* @ts-ignore */ item.discountPrice && item.discountPrice < item.price
-													? /* @ts-ignore */ item.discountPrice
-													: item.price) * item.quantity
-											).toFixed(2)}
+											{
+												/* @ts-ignore */ (
+													(item.discountPrice && item.discountPrice < item.price
+														? /* @ts-ignore */ item.discountPrice
+														: item.price) * item.quantity
+												).toFixed(2)
+											}
 										</span>
 									</div>
 								</div>

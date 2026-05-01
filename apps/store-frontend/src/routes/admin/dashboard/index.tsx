@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Package, ShoppingBag, Tag, Users } from "lucide-react";
 import { useAuth } from "@/store/auth.store";
-import { ShoppingBag, Package, Users, Tag } from "lucide-react";
 
 export const Route = createFileRoute("/admin/dashboard/")({
 	component: AdminDashboardPage,
@@ -10,11 +10,35 @@ function AdminDashboardPage() {
 	const { session } = useAuth();
 
 	const stats = [
-		{ label: "Products", icon: Package, link: "/admin/products", color: "text-blue-500", bg: "bg-blue-50" },
-		{ label: "Categories", icon: Tag, link: "/admin/categories", color: "text-purple-500", bg: "bg-purple-50" },
-		{ label: "Orders", icon: ShoppingBag, link: "/admin/orders", color: "text-orange-500", bg: "bg-orange-50" },
-		{ label: "Users", icon: Users, link: "/admin/users", color: "text-green-500", bg: "bg-green-50" },
-	]
+		{
+			label: "Products",
+			icon: Package,
+			link: "/admin/products",
+			color: "text-blue-500",
+			bg: "bg-blue-50",
+		},
+		{
+			label: "Categories",
+			icon: Tag,
+			link: "/admin/categories",
+			color: "text-purple-500",
+			bg: "bg-purple-50",
+		},
+		{
+			label: "Orders",
+			icon: ShoppingBag,
+			link: "/admin/orders",
+			color: "text-orange-500",
+			bg: "bg-orange-50",
+		},
+		{
+			label: "Users",
+			icon: Users,
+			link: "/admin/users",
+			color: "text-green-500",
+			bg: "bg-green-50",
+		},
+	];
 
 	return (
 		<div className="space-y-8">
@@ -35,11 +59,15 @@ function AdminDashboardPage() {
 						className="group rounded-xl border bg-white p-6 shadow-sm hover:shadow-md transition-all hover:-translate-y-1"
 					>
 						<div className="flex items-center justify-between space-x-4">
-							<div className={`p-3 rounded-lg ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform`}>
+							<div
+								className={`p-3 rounded-lg ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform`}
+							>
 								<stat.icon className="h-6 w-6" />
 							</div>
 							<div className="text-right">
-								<p className="text-sm font-medium text-muted-foreground">{stat.label}</p>
+								<p className="text-sm font-medium text-muted-foreground">
+									{stat.label}
+								</p>
 								<p className="text-2xl font-bold text-gray-900">Manage</p>
 							</div>
 						</div>
@@ -51,11 +79,11 @@ function AdminDashboardPage() {
 				<div className="max-w-md mx-auto space-y-3">
 					<h3 className="text-lg font-semibold">Ready to scale?</h3>
 					<p className="text-sm text-muted-foreground">
-						The admin panel is now fully configured with product management, 
+						The admin panel is now fully configured with product management,
 						inventory tracking, and customer data management capabilities.
 					</p>
 				</div>
 			</div>
 		</div>
-	)
+	);
 }

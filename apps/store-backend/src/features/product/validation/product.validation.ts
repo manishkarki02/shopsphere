@@ -1,43 +1,61 @@
 import {
-	createProductBodySchema,
-	objectIdSchema as sharedObjectId,
-	updateProductBodySchema,
-	updateProductStatusBodySchema,
-	type CreateProductBody,
-	type UpdateProductBody,
-	type UpdateProductStatusBody,
+  type CreateProductBody,
+  createProductBodySchema,
+  objectIdSchema,
+  type UpdateProductBody,
+  type UpdateProductStatusBody,
+  updateProductBodySchema,
+  updateProductStatusBodySchema,
 } from "@shop-sphere/shared";
-import mongoose from "mongoose";
 import { z } from "zod";
 
-const objectIdSchema = z
-	.string()
-	.refine((val) => mongoose.Types.ObjectId.isValid(val), {
-		message: "Invalid Mongoose ObjectId",
-	});
+// ============================================================
+// CREATE
+// ============================================================
 
-export const createProductSchema = z.object({
-	body: createProductBodySchema as unknown as z.ZodType<CreateProductBody>,
+export const createProductRequestSchema = z.object({
+  body: createProductBodySchema as unknown as z.ZodType<CreateProductBody>,
 });
+export type CreateProductRequestSchema = z.infer<
+  typeof createProductRequestSchema
+>;
 
-export const updateProductSchema = z.object({
-	params: z.object({ id: objectIdSchema }),
-	body: updateProductBodySchema as unknown as z.ZodType<UpdateProductBody>,
+// ============================================================
+// READ
+// ============================================================
+
+export const getProductRequestSchema = z.object({
+  params: z.object({ id: objectIdSchema }),
 });
+export type GetProductRequestSchema = z.infer<typeof getProductRequestSchema>;
 
-export const updateProductStatusSchema = z.object({
-	params: z.object({ id: objectIdSchema }),
-	body: updateProductStatusBodySchema as unknown as z.ZodType<UpdateProductStatusBody>,
+// ============================================================
+// UPDATE
+// ============================================================
+
+export const updateProductRequestSchema = z.object({
+  params: z.object({ id: objectIdSchema }),
+  body: updateProductBodySchema as unknown as z.ZodType<UpdateProductBody>,
 });
+export type UpdateProductRequestSchema = z.infer<
+  typeof updateProductRequestSchema
+>;
 
-export const getProductSchema = z.object({
-	params: z.object({ id: objectIdSchema }),
+export const updateProductStatusRequestSchema = z.object({
+  params: z.object({ id: objectIdSchema }),
+  body: updateProductStatusBodySchema as unknown as z.ZodType<UpdateProductStatusBody>,
 });
+export type UpdateProductStatusRequestSchema = z.infer<
+  typeof updateProductStatusRequestSchema
+>;
 
-export const deleteProductSchema = z.object({
-	params: z.object({ id: objectIdSchema }),
+// ============================================================
+// DELETE
+// ============================================================
+
+export const deleteProductRequestSchema = z.object({
+  params: z.object({ id: objectIdSchema }),
 });
-
-export type CreateProductSchema = CreateProductBody;
-export type UpdateProductSchema = UpdateProductBody;
-export type UpdateProductStatusSchema = UpdateProductStatusBody;
+export type DeleteProductRequestSchema = z.infer<
+  typeof deleteProductRequestSchema
+>;

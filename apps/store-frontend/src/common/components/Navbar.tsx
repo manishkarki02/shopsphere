@@ -149,7 +149,7 @@ export default function Navbar() {
 								<span className="sr-only">Toggle navigation menu</span>
 							</Button>
 						</SheetTrigger>
-						<SheetContent side="left" className="w-[300px] sm:w-[400px]">
+						<SheetContent side="left" className="w-75 sm:w-100">
 							<nav className="flex flex-col gap-4 mt-8">
 								<NavLinks />
 							</nav>

@@ -38,7 +38,9 @@ export function ProductCard({
 	const addToCartLocal = useCartStore((state) => state.addToCart);
 	const isInWishlist = useWishlistStore((state) => state.isInWishlist);
 	const addToWishlistLocal = useWishlistStore((state) => state.addToWishlist);
-	const removeFromWishlistLocal = useWishlistStore((state) => state.removeFromWishlist);
+	const removeFromWishlistLocal = useWishlistStore(
+		(state) => state.removeFromWishlist,
+	);
 
 	const { mutate: addToCartApi } = useAddToCart();
 	const { mutate: addToWishlistApi } = useAddToWishlist();
@@ -107,10 +109,11 @@ export function ProductCard({
 		showDiscount && discountPercentage && discountPercentage > 0
 			? discountPercentage
 			: 0;
-	const currentPrice = discountPercent > 0 ? price - (price * discountPercent) / 100 : price;
+	const currentPrice =
+		discountPercent > 0 ? price - (price * discountPercent) / 100 : price;
 
 	return (
-		<div className="group relative flex w-full max-w-[280px] flex-col overflow-hidden rounded-md bg-background transition-all hover:shadow-lg">
+		<div className="group relative flex w-full max-w-70 flex-col overflow-hidden rounded-md bg-background transition-all hover:shadow-lg">
 			<div className="relative aspect-square w-full overflow-hidden bg-muted/20 p-4">
 				{/* Badges */}
 				<div className="absolute left-3 top-3 z-10 flex flex-col gap-2">
@@ -211,7 +214,9 @@ export function ProductCard({
 							/>
 						))}
 					</div>
-					<span className="text-xs text-muted-foreground">({reviews?.length || 0})</span>
+					<span className="text-xs text-muted-foreground">
+						({reviews?.length || 0})
+					</span>
 				</div>
 			</div>
 		</div>

@@ -43,7 +43,11 @@ export default function ProductsListPage() {
 							<Skeleton key={i} className="h-[350px] w-full" />
 						))
 					: products.map((product) => (
-							<ProductCard key={product._id} {...product} showDiscount={false} />
+							<ProductCard
+								key={product._id}
+								{...product}
+								showDiscount={false}
+							/>
 						))}
 			</div>
 

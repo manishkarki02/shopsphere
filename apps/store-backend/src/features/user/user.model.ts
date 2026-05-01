@@ -1,20 +1,11 @@
-import mongoose, { type Document, Schema } from "mongoose";
+import type { IUser } from "@shop-sphere/shared";
+import mongoose, { Schema } from "mongoose";
 
-export interface IUser extends Document {
-	firstName: string;
-	lastName: string;
-	email: string;
-	password?: string;
-	otp?: string;
-	role: "CUSTOMER" | "STAFF" | "ADMIN";
-	isVerified: boolean;
-	address?: mongoose.Types.ObjectId[];
-	refreshToken?: string;
-	createdAt: Date;
-	updatedAt: Date;
+interface IUserDocument extends Omit<IUser, "address"> {
+	address: mongoose.Types.ObjectId[];
 }
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<IUserDocument>(
 	{
 		firstName: {
 			type: String,
@@ -63,4 +54,4 @@ const userSchema = new Schema<IUser>(
 	},
 );
 
-export const User = mongoose.model<IUser>("User", userSchema);
+export const User = mongoose.model<IUserDocument>("User", userSchema);

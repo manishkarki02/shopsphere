@@ -1,31 +1,34 @@
+import { Loader2, Pencil, PlusCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { PlusCircle, Pencil, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
 	Dialog,
 	DialogContent,
+	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogFooter,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-	useGetCategories,
-	useCreateCategory,
-	useUpdateCategory,
-	useDeleteCategory,
-} from "@/feature/category/hooks/useCategoryQuery";
 import type { ICategory } from "@/feature/category/category.service";
+import {
+	useCreateCategory,
+	useDeleteCategory,
+	useGetCategories,
+	useUpdateCategory,
+} from "@/feature/category/hooks/useCategoryQuery";
 
 export function AdminCategoryList() {
 	const { data: categories = [], isLoading } = useGetCategories();
 
-	const { mutateAsync: createCategory, isPending: isCreating } = useCreateCategory();
-	const { mutateAsync: updateCategory, isPending: isUpdating } = useUpdateCategory();
-	const { mutateAsync: deleteCategory, isPending: isDeleting } = useDeleteCategory();
+	const { mutateAsync: createCategory, isPending: isCreating } =
+		useCreateCategory();
+	const { mutateAsync: updateCategory, isPending: isUpdating } =
+		useUpdateCategory();
+	const { mutateAsync: deleteCategory, isPending: isDeleting } =
+		useDeleteCategory();
 
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [editing, setEditing] = useState<ICategory | null>(null);
@@ -105,63 +108,89 @@ export function AdminCategoryList() {
 				<table className="w-full text-sm">
 					<thead className="bg-muted/50 text-left">
 						<tr>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Icon</th>
-							<th className="px-4 py-3 font-semibold text-muted-foreground">Name</th>
-							<th className="px-4 py-3 font-semibold text-muted-foreground text-right">Actions</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Icon
+							</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground">
+								Name
+							</th>
+							<th className="px-4 py-3 font-semibold text-muted-foreground text-right">
+								Actions
+							</th>
 						</tr>
 					</thead>
 					<tbody className="divide-y">
-						{isLoading
-							? Array.from({ length: 5 }).map((_, i) => (
-									<tr key={i}>
-										<td className="px-4 py-3"><Skeleton className="w-10 h-10 rounded-full" /></td>
-										<td className="px-4 py-3"><Skeleton className="w-40 h-4" /></td>
-										<td className="px-4 py-3"><Skeleton className="w-20 h-8 ml-auto" /></td>
-									</tr>
-								))
-							: categories.length === 0
-								? (
-										<tr>
-											<td colSpan={3} className="px-4 py-12 text-center text-muted-foreground">
-												No categories found. Create one!
-											</td>
-										</tr>
-									)
-								: categories.map((cat) => (
-										<tr key={cat._id} className="hover:bg-muted/50 transition-colors">
-											<td className="px-4 py-3">
-												{cat.icon ? (
-													<img src={cat.icon} alt={cat.name} className="w-10 h-10 object-cover rounded-md" />
+						{isLoading ? (
+							Array.from({ length: 5 }).map((_, i) => (
+								<tr key={i}>
+									<td className="px-4 py-3">
+										<Skeleton className="w-10 h-10 rounded-full" />
+									</td>
+									<td className="px-4 py-3">
+										<Skeleton className="w-40 h-4" />
+									</td>
+									<td className="px-4 py-3">
+										<Skeleton className="w-20 h-8 ml-auto" />
+									</td>
+								</tr>
+							))
+						) : categories.length === 0 ? (
+							<tr>
+								<td
+									colSpan={3}
+									className="px-4 py-12 text-center text-muted-foreground"
+								>
+									No categories found. Create one!
+								</td>
+							</tr>
+						) : (
+							categories.map((cat) => (
+								<tr
+									key={cat._id}
+									className="hover:bg-muted/50 transition-colors"
+								>
+									<td className="px-4 py-3">
+										{cat.icon ? (
+											<img
+												src={cat.icon}
+												alt={cat.name}
+												className="w-10 h-10 object-cover rounded-md"
+											/>
+										) : (
+											<div className="w-10 h-10 rounded-md bg-muted flex items-center justify-center text-xs text-muted-foreground">
+												N/A
+											</div>
+										)}
+									</td>
+									<td className="px-4 py-3 font-medium">
+										{cat.name || cat.categoryName}
+									</td>
+									<td className="px-4 py-3">
+										<div className="flex items-center justify-end gap-2">
+											<Button
+												size="sm"
+												variant="outline"
+												onClick={() => openEdit(cat)}
+											>
+												<Pencil className="h-3.5 w-3.5" />
+											</Button>
+											<Button
+												size="sm"
+												variant="destructive"
+												disabled={isDeleting && deletingId === cat._id}
+												onClick={() => handleDelete(cat._id)}
+											>
+												{isDeleting && deletingId === cat._id ? (
+													<Loader2 className="h-3.5 w-3.5 animate-spin" />
 												) : (
-													<div className="w-10 h-10 rounded-md bg-muted flex items-center justify-center text-xs text-muted-foreground">N/A</div>
+													<Trash2 className="h-3.5 w-3.5" />
 												)}
-											</td>
-											<td className="px-4 py-3 font-medium">{cat.name || cat.categoryName}</td>
-											<td className="px-4 py-3">
-												<div className="flex items-center justify-end gap-2">
-													<Button
-														size="sm"
-														variant="outline"
-														onClick={() => openEdit(cat)}
-													>
-														<Pencil className="h-3.5 w-3.5" />
-													</Button>
-													<Button
-														size="sm"
-														variant="destructive"
-														disabled={isDeleting && deletingId === cat._id}
-														onClick={() => handleDelete(cat._id)}
-													>
-														{isDeleting && deletingId === cat._id ? (
-															<Loader2 className="h-3.5 w-3.5 animate-spin" />
-														) : (
-															<Trash2 className="h-3.5 w-3.5" />
-														)}
-													</Button>
-												</div>
-											</td>
-										</tr>
-									))}
+											</Button>
+										</div>
+									</td>
+								</tr>
+							))
+						)}
 					</tbody>
 				</table>
 			</div>
@@ -170,7 +199,9 @@ export function AdminCategoryList() {
 			<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
 				<DialogContent className="sm:max-w-[400px]">
 					<DialogHeader>
-						<DialogTitle>{editing ? "Edit Category" : "Create Category"}</DialogTitle>
+						<DialogTitle>
+							{editing ? "Edit Category" : "Create Category"}
+						</DialogTitle>
 					</DialogHeader>
 					<div className="space-y-4 py-2">
 						<div className="space-y-2">
@@ -183,7 +214,9 @@ export function AdminCategoryList() {
 							/>
 						</div>
 						<div className="space-y-2">
-							<Label htmlFor="cat-icon">Icon Image {editing && "(leave empty to keep current)"}</Label>
+							<Label htmlFor="cat-icon">
+								Icon Image {editing && "(leave empty to keep current)"}
+							</Label>
 							<Input
 								id="cat-icon"
 								type="file"
@@ -197,7 +230,9 @@ export function AdminCategoryList() {
 							Cancel
 						</Button>
 						<Button onClick={handleSave} disabled={isCreating || isUpdating}>
-							{(isCreating || isUpdating) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+							{(isCreating || isUpdating) && (
+								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+							)}
 							{editing ? "Update" : "Create"}
 						</Button>
 					</DialogFooter>

@@ -24,13 +24,13 @@ const STORAGE_KEY = "auth.session";
 function getStoredSession(): ISession | null {
 	const session = localStorage.getItem(STORAGE_KEY);
 	if (session) return JSON.parse(session);
-	
+
 	// MOCK DEFAULT SESSION FOR E2E TESTING
 	return {
 		id: "u1",
 		name: "Admin Mock",
 		email: "admin@mock.com",
-		role: "ADMIN"
+		role: "ADMIN",
 	};
 }
 

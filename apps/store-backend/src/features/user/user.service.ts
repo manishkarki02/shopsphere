@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import httpStatus from "http-status";
 import { applyQueryFeatures } from "@/common/utils/query.utils";
 import { ApiError } from "@/common/utils/response.util";
-import { type IUser, User } from "./user.model";
+import { User } from "./user.model";
 import type {
 	CreateUserSchema,
 	GetAllUsersSchema,
@@ -24,7 +24,7 @@ export async function createUser(body: CreateUserSchema["body"]) {
 
 export async function getUserById(id: string) {
 	const user = await User.findById(id);
-	if (!user || !user.isVerified) {
+	if (!user?.isVerified) {
 		throw new ApiError(httpStatus.NOT_FOUND, { message: "User not found" });
 	}
 	return user;

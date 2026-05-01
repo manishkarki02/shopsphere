@@ -1,4 +1,8 @@
-import { createRootRouteWithContext, Outlet, useLocation } from "@tanstack/react-router";
+import {
+	createRootRouteWithContext,
+	Outlet,
+	useLocation,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import Footer from "@/common/components/Footer";
 import Navbar from "@/common/components/Navbar";

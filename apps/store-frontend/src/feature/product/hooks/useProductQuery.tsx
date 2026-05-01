@@ -2,15 +2,15 @@ import type { PaginationQuery } from "@shop-sphere/shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCustomQuery } from "@/common/hooks/useCustomQuery";
 import {
+	createProduct,
+	deleteProduct,
 	getBestSellingProducts,
 	getNewArrivals,
 	getProductById,
 	getProducts,
 	getTodaySales,
-	createProduct,
 	updateProduct,
 	updateProductStatus,
-	deleteProduct,
 } from "../product.service";
 
 export const PRODUCT_KEYS = {

@@ -1,7 +1,8 @@
 import type { IProduct } from "@shop-sphere/shared";
 import mongoose from "mongoose";
 
-interface IProductDocument extends Omit<IProduct, "category" | "reviews"> {
+export interface IProductDocument
+	extends Omit<IProduct, "category" | "reviews"> {
 	category: mongoose.Types.ObjectId;
 	reviews: mongoose.Types.ObjectId[];
 }

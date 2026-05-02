@@ -49,6 +49,7 @@ export async function applyQueryFeatures<ModelType, ResponseType = ModelType>(
 		data,
 		totalRecords,
 		totalPages: Math.ceil(totalRecords / limit),
-		currentPage: page,
+		page,
+		limit,
 	};
 }

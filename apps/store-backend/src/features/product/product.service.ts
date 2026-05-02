@@ -1,10 +1,12 @@
 import type { IProductResponse } from "@shop-sphere/shared";
 import httpStatus from "http-status";
+import { applyQueryFeatures } from "@/common/utils/query.utils";
 import { ApiError } from "@/common/utils/response.util";
 import Environment from "@/configs/env";
-import { Product } from "./product.model";
+import { type IProductDocument, Product } from "./product.model";
 import type {
 	CreateProductRequestSchema,
+	GetProductsRequestSchema,
 	UpdateProductRequestSchema,
 	UpdateProductStatusRequestSchema,
 } from "./validation/product.validation";
@@ -47,22 +49,15 @@ export async function createProduct(
 }
 
 // ------------- Get All Products --------------
-export async function getProducts(query: any) {
-	const page = parseInt(query.page as string) || 1;
-	const limit = parseInt(query.limit as string) || 12;
-	const skip = (page - 1) * limit;
-
-	const products = await Product.find()
-		.skip(skip)
-		.limit(limit)
-		.lean<IProductResponse[]>();
-	if (!products) {
-		throw new ApiError(httpStatus.NOT_FOUND, {
-			message: "No products in database",
-		});
-	}
-
-	return products;
+export async function getProducts(query: GetProductsRequestSchema["query"]) {
+	return await applyQueryFeatures<IProductDocument, IProductResponse>(
+		Product,
+		{},
+		query,
+		{
+			fieldsToSearch: ["productName", "description"],
+		},
+	);
 }
 
 // ------------- Get Product by ID --------------
@@ -80,7 +75,7 @@ export async function updateProduct(
 	body: UpdateProductRequestSchema["body"],
 	files?: Express.Multer.File[],
 ) {
-	const updateData: any = { ...body };
+	const updateData = { ...body };
 
 	if (files && files.length > 0) {
 		const images = files.map((file) => {

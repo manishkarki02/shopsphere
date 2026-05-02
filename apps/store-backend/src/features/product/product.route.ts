@@ -1,3 +1,4 @@
+import { Roles } from "@shop-sphere/shared";
 import express, { type Router } from "express";
 import { jwtAuthMiddleware } from "@/common/middlewares/auth.middleware";
 import { imagesUpload } from "@/common/middlewares/fileUpload.middleware";
@@ -20,7 +21,7 @@ const router: Router = express.Router();
 router.post(
 	"/",
 	jwtAuthMiddleware,
-	requireRole(["STAFF", "ADMIN"]),
+	requireRole([Roles.STAFF, Roles.ADMIN]),
 	imagesUpload.array("images", 5),
 	validatorMiddleware(createProductRequestSchema),
 	catchAsync(productController.createProduct),
@@ -41,7 +42,7 @@ router.get(
 router.put(
 	"/:id",
 	jwtAuthMiddleware,
-	requireRole(["STAFF", "ADMIN"]),
+	requireRole([Roles.STAFF, Roles.ADMIN]),
 	imagesUpload.array("images", 4),
 	validatorMiddleware(updateProductRequestSchema),
 	catchAsync(productController.updateProduct),
@@ -50,7 +51,7 @@ router.put(
 router.patch(
 	"/:id/status",
 	jwtAuthMiddleware,
-	requireRole(["STAFF", "ADMIN"]),
+	requireRole([Roles.STAFF, Roles.ADMIN]),
 	validatorMiddleware(updateProductStatusRequestSchema),
 	catchAsync(productController.updateProductStatus),
 );
@@ -60,7 +61,7 @@ router.patch(
 router.delete(
 	"/:id",
 	jwtAuthMiddleware,
-	requireRole(["STAFF", "ADMIN"]),
+	requireRole([Roles.STAFF, Roles.ADMIN]),
 	validatorMiddleware(deleteProductRequestSchema),
 	catchAsync(productController.deleteProduct),
 );

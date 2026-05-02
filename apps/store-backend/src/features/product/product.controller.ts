@@ -6,6 +6,7 @@ import type {
 	CreateProductRequestSchema,
 	DeleteProductRequestSchema,
 	GetProductRequestSchema,
+	GetProductsRequestSchema,
 	UpdateProductRequestSchema,
 	UpdateProductStatusRequestSchema,
 } from "./validation/product.validation";
@@ -14,7 +15,6 @@ import type {
 export const createProduct: ValidatedRequestHandler<
 	CreateProductRequestSchema
 > = async (req, res) => {
-	// files would be populated by multer middleware
 	const files = req.files as Express.Multer.File[];
 	const product = await productService.createProduct(req.body, files);
 	return ApiResponse.success(res, httpStatus.CREATED, {
@@ -24,7 +24,9 @@ export const createProduct: ValidatedRequestHandler<
 };
 
 // ========== Read ==========
-export const getProducts: ValidatedRequestHandler = async (req, res) => {
+export const getProducts: ValidatedRequestHandler<
+	GetProductsRequestSchema
+> = async (req, res) => {
 	const products = await productService.getProducts(req.query);
 	return ApiResponse.success(res, httpStatus.OK, {
 		message: "Products fetched successfully",

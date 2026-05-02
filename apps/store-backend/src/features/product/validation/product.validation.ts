@@ -2,12 +2,13 @@ import {
 	type CreateProductBody,
 	createProductBodySchema,
 	objectIdSchema,
+	queryValidationSchema,
 	type UpdateProductBody,
 	type UpdateProductStatusBody,
 	updateProductBodySchema,
 	updateProductStatusBodySchema,
 } from "@shop-sphere/shared";
-import { z } from "zod";
+import { z } from "zod/v4";
 
 // ========== Create ==========
 
@@ -19,6 +20,11 @@ export type CreateProductRequestSchema = z.infer<
 >;
 
 // ========== Read ==========
+
+export const getProductsRequestSchema = z.object({
+	query: queryValidationSchema,
+});
+export type GetProductsRequestSchema = z.infer<typeof getProductsRequestSchema>;
 
 export const getProductRequestSchema = z.object({
 	params: z.object({ id: objectIdSchema }),

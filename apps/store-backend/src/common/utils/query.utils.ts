@@ -1,3 +1,4 @@
+import { SORTING_ORDER } from "@shop-sphere/shared";
 import type { FilterQuery, Model, SortOrder } from "mongoose";
 
 interface QueryOptions {
@@ -34,9 +35,9 @@ export async function applyQueryFeatures<ModelType, ResponseType = ModelType>(
 	// Build sort
 	const sort: Record<string, SortOrder> = {};
 	if (options.sortBy) {
-		sort[options.sortBy] = options.sortOrder === "desc" ? -1 : 1;
+		sort[options.sortBy] = options.sortOrder === SORTING_ORDER.desc ? -1 : 1;
 	} else {
-		sort.createdAt = -1; // Default: newest first
+		sort.createdAt = -1;
 	}
 
 	const [data, totalRecords] = await Promise.all([

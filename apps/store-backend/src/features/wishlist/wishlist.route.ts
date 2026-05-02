@@ -1,36 +1,34 @@
 import express, { type Router } from "express";
 import { jwtAuthMiddleware } from "@/common/middlewares/auth.middleware";
-import { requireRole } from "@/common/middlewares/token.middleware";
 import validatorMiddleware from "@/common/middlewares/validator.middleware";
 import { catchAsync } from "@/common/utils/error.util";
 import {
-	addWishlistSchema,
-	deleteWishlistSchema,
+	addWishlistRequestSchema,
+	deleteWishlistRequestSchema,
 } from "./validation/wishlist.validation";
 import * as wishlistController from "./wishlist.controller";
 
 const router: Router = express.Router();
 
+// ========== Create ==========
+
 router.post(
 	"/",
 	jwtAuthMiddleware,
-	requireRole(["CUSTOMER", "STAFF", "ADMIN"]),
-	validatorMiddleware(addWishlistSchema),
+	validatorMiddleware(addWishlistRequestSchema),
 	catchAsync(wishlistController.addWishlist),
 );
 
-router.get(
-	"/",
-	jwtAuthMiddleware,
-	requireRole(["CUSTOMER", "STAFF", "ADMIN"]),
-	catchAsync(wishlistController.getWishlists),
-);
+// ========== Read ==========
+
+router.get("/", jwtAuthMiddleware, catchAsync(wishlistController.getWishlists));
+
+// ========== Delete ==========
 
 router.delete(
 	"/:id",
 	jwtAuthMiddleware,
-	requireRole(["CUSTOMER", "STAFF", "ADMIN"]),
-	validatorMiddleware(deleteWishlistSchema),
+	validatorMiddleware(deleteWishlistRequestSchema),
 	catchAsync(wishlistController.deleteWishlist),
 );
 

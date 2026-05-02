@@ -1,22 +1,19 @@
-import {
-	type AddWishlistBody,
-	addWishlistBodySchema,
-} from "@shop-sphere/shared";
-import mongoose from "mongoose";
-import { z } from "zod";
+import { addWishlistBodySchema } from "@shop-sphere/shared";
+import { z } from "zod/v4";
+import { objectIdSchema } from "@/common/validations/common.validation";
 
-const objectIdSchema = z
-	.string()
-	.refine((val) => mongoose.Types.ObjectId.isValid(val), {
-		message: "Invalid Mongoose ObjectId",
-	});
+// ========== Create ==========
 
-export const addWishlistSchema = z.object({
-	body: addWishlistBodySchema as unknown as z.ZodType<AddWishlistBody>,
+export const addWishlistRequestSchema = z.object({
+	body: addWishlistBodySchema,
 });
+export type AddWishlistRequestSchema = z.infer<typeof addWishlistRequestSchema>;
 
-export const deleteWishlistSchema = z.object({
+// ========== Delete ==========
+
+export const deleteWishlistRequestSchema = z.object({
 	params: z.object({ id: objectIdSchema }),
 });
-
-export type AddWishlistSchema = AddWishlistBody;
+export type DeleteWishlistRequestSchema = z.infer<
+	typeof deleteWishlistRequestSchema
+>;

@@ -1,11 +1,16 @@
-import type { RequestHandler } from "express";
 import httpStatus from "http-status";
 import type { ValidatedRequestHandler } from "@/common/types/types/request.type";
 import { ApiResponse } from "@/common/utils/response.util";
+import type {
+	AddWishlistRequestSchema,
+	DeleteWishlistRequestSchema,
+} from "./validation/wishlist.validation";
 import * as wishlistService from "./wishlist.service";
 
+// ========== Create ==========
+
 export const addWishlist: ValidatedRequestHandler<
-	typeof import("./validation/wishlist.validation").addWishlistSchema
+	AddWishlistRequestSchema
 > = async (req, res) => {
 	const user = res.locals.user;
 	const wishlist = await wishlistService.addWishlist(
@@ -18,7 +23,9 @@ export const addWishlist: ValidatedRequestHandler<
 	});
 };
 
-export const getWishlists: RequestHandler = async (req, res) => {
+// ========== Read ==========
+
+export const getWishlists: ValidatedRequestHandler = async (_req, res) => {
 	const user = res.locals.user;
 	const wishlists = await wishlistService.getWishlists(user._id);
 	return ApiResponse.success(res, httpStatus.OK, {
@@ -27,8 +34,10 @@ export const getWishlists: RequestHandler = async (req, res) => {
 	});
 };
 
+// ========== Delete ==========
+
 export const deleteWishlist: ValidatedRequestHandler<
-	typeof import("./validation/wishlist.validation").deleteWishlistSchema
+	DeleteWishlistRequestSchema
 > = async (req, res) => {
 	const user = res.locals.user;
 	await wishlistService.deleteWishlist(user._id, req.params.id);

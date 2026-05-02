@@ -1,3 +1,4 @@
+import { Roles } from "@shop-sphere/shared";
 import express, { type Router } from "express";
 import { jwtAuthMiddleware } from "@/common/middlewares/auth.middleware";
 import { requireRole } from "@/common/middlewares/token.middleware";
@@ -11,7 +12,6 @@ import {
 	getUserRequestSchema,
 	updateUserRequestSchema,
 } from "./validation/user.validation";
-import { Roles } from "@shop-sphere/shared";
 
 const router: Router = express.Router();
 

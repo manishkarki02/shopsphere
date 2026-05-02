@@ -1,21 +1,21 @@
-import mongoose, { type Document } from "mongoose";
+import mongoose from "mongoose";
 
-export interface IWishlistItem {
+interface IWishlistItemDocument {
 	productId: mongoose.Types.ObjectId;
 }
 
-export interface IWishlist extends Document {
+interface IWishlistDocument {
 	userId: mongoose.Types.ObjectId;
-	items: IWishlistItem[];
+	items: IWishlistItemDocument[];
 }
 
-const wishlistItemSchema = new mongoose.Schema<IWishlistItem>({
+const wishlistItemSchema = new mongoose.Schema<IWishlistItemDocument>({
 	productId: { type: mongoose.Schema.Types.ObjectId, ref: "Products" },
 });
 
-const wishlistSchema = new mongoose.Schema<IWishlist>(
+const wishlistSchema = new mongoose.Schema<IWishlistDocument>(
 	{
-		userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // Adjust ref based on your actual user model
+		userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 		items: [wishlistItemSchema],
 	},
 	{
@@ -23,4 +23,7 @@ const wishlistSchema = new mongoose.Schema<IWishlist>(
 	},
 );
 
-export const Wishlist = mongoose.model<IWishlist>("Wishlist", wishlistSchema);
+export const Wishlist = mongoose.model<IWishlistDocument>(
+	"Wishlist",
+	wishlistSchema,
+);

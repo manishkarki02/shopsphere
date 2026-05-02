@@ -104,14 +104,14 @@ function CartPage() {
 									className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 items-center"
 								>
 									<div className="col-span-1 md:col-span-6 flex items-center gap-4 relative">
-										<button
+										<Button
 											onClick={() =>
 												handleRemoveItem(item._id, item.productName)
 											}
 											className="absolute -top-2 -left-2 md:static text-destructive hover:bg-destructive/10 p-1 rounded-full transition-colors"
 										>
 											<Trash2 className="w-4 h-4" />
-										</button>
+										</Button>
 										<img
 											src={item.images[0]}
 											alt={item.productName}
@@ -141,7 +141,7 @@ function CartPage() {
 											Qty:
 										</span>
 										<div className="flex items-center border rounded-md">
-											<button
+											<Button
 												onClick={() =>
 													handleQuantityChange(
 														item._id,
@@ -152,11 +152,11 @@ function CartPage() {
 												className="px-3 py-1 hover:bg-muted font-bold border-r"
 											>
 												-
-											</button>
+											</Button>
 											<span className="px-4 text-sm font-medium">
 												{item.quantity}
 											</span>
-											<button
+											<Button
 												onClick={() =>
 													handleQuantityChange(
 														item._id,
@@ -167,7 +167,7 @@ function CartPage() {
 												className="px-3 py-1 hover:bg-muted font-bold border-l"
 											>
 												+
-											</button>
+											</Button>
 										</div>
 									</div>
 									<div className="col-span-1 md:col-span-2 flex justify-between md:justify-end items-center font-medium">

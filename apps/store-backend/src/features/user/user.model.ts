@@ -1,7 +1,7 @@
 import type { IUser } from "@shop-sphere/shared";
 import mongoose, { Schema } from "mongoose";
 
-interface IUserDocument extends Omit<IUser, "address"> {
+export interface IUserDocument extends Omit<IUser, "address"> {
 	address: mongoose.Types.ObjectId[];
 }
 

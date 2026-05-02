@@ -9,9 +9,7 @@ import {
 } from "@shop-sphere/shared";
 import { z } from "zod";
 
-// ============================================================
-// CREATE
-// ============================================================
+// ========== Create ==========
 
 export const createProductRequestSchema = z.object({
   body: createProductBodySchema as unknown as z.ZodType<CreateProductBody>,
@@ -20,18 +18,14 @@ export type CreateProductRequestSchema = z.infer<
   typeof createProductRequestSchema
 >;
 
-// ============================================================
-// READ
-// ============================================================
+// ========== Read ==========
 
 export const getProductRequestSchema = z.object({
   params: z.object({ id: objectIdSchema }),
 });
 export type GetProductRequestSchema = z.infer<typeof getProductRequestSchema>;
 
-// ============================================================
-// UPDATE
-// ============================================================
+// ========== Update ==========
 
 export const updateProductRequestSchema = z.object({
   params: z.object({ id: objectIdSchema }),
@@ -49,9 +43,7 @@ export type UpdateProductStatusRequestSchema = z.infer<
   typeof updateProductStatusRequestSchema
 >;
 
-// ============================================================
-// DELETE
-// ============================================================
+// ========== Delete ==========
 
 export const deleteProductRequestSchema = z.object({
   params: z.object({ id: objectIdSchema }),

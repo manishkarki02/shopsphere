@@ -12,9 +12,9 @@ interface SearchConfig {
 	fieldsToSearch?: string[];
 }
 
-export async function applyQueryFeatures<T>(
-	model: Model<T>,
-	filter: FilterQuery<T>,
+export async function applyQueryFeatures<ModelType, ResponseType = ModelType>(
+	model: Model<ModelType>,
+	filter: FilterQuery<ModelType>,
 	options: QueryOptions,
 	config?: SearchConfig,
 ) {
@@ -28,7 +28,7 @@ export async function applyQueryFeatures<T>(
 		const searchConditions = config.fieldsToSearch.map((field) => ({
 			[field]: searchRegex,
 		}));
-		filter = { ...filter, $or: searchConditions } as FilterQuery<T>;
+		filter = { ...filter, $or: searchConditions } as FilterQuery<ModelType>;
 	}
 
 	// Build sort
@@ -40,7 +40,7 @@ export async function applyQueryFeatures<T>(
 	}
 
 	const [data, totalRecords] = await Promise.all([
-		model.find(filter).sort(sort).skip(skip).limit(limit).lean(),
+		model.find(filter).sort(sort).skip(skip).limit(limit).lean<ResponseType>(),
 		model.countDocuments(filter),
 	]);
 

@@ -9,11 +9,7 @@ import type {
   UpdateProductStatusRequestSchema,
 } from "./validation/product.validation";
 
-// ============================================================
-// CREATE
-// ============================================================
-
-// ------------- Create Product --------------
+// ------------- Create a Product --------------
 export async function createProduct(
   body: CreateProductRequestSchema["body"],
   files: Express.Multer.File[],
@@ -50,10 +46,6 @@ export async function createProduct(
   return newProduct.toObject() as IProductResponse;
 }
 
-// ============================================================
-// READ
-// ============================================================
-
 // ------------- Get All Products --------------
 export async function getProducts(query: any) {
   const page = parseInt(query.page as string) || 1;
@@ -82,11 +74,7 @@ export async function getProductById(id: string) {
   return product;
 }
 
-// ============================================================
-// UPDATE
-// ============================================================
-
-// ------------- Update a Product --------------
+// ------------- Update Product Details --------------
 export async function updateProduct(
   id: string,
   body: UpdateProductRequestSchema["body"],
@@ -133,10 +121,6 @@ export async function updateProductStatus(
 
   return updatedProduct;
 }
-
-// ============================================================
-// DELETE
-// ============================================================
 
 // ------------- Delete a Product --------------
 export async function deleteProduct(id: string) {

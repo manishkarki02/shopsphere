@@ -1,35 +1,43 @@
 import {
-	createUserBodySchema,
-	updateUserBodySchema,
+  createUserBodySchema,
+  updateUserBodySchema,
 } from "@shop-sphere/shared";
 import { z } from "zod";
 import {
-	objectIdSchema,
-	paginationSchema,
+  objectIdSchema,
+  paginationSchema,
 } from "@/common/validations/common.validation";
 
-export const createUserSchema = z.object({
-	body: createUserBodySchema,
-});
-export type CreateUserSchema = z.infer<typeof createUserSchema>;
+// ========== Create ==========
 
-export const updateUserSchema = z.object({
-	params: z.object({ id: objectIdSchema }),
-	body: updateUserBodySchema,
+export const createUserRequestSchema = z.object({
+  body: createUserBodySchema,
 });
-export type UpdateUserSchema = z.infer<typeof updateUserSchema>;
+export type CreateUserRequestSchema = z.infer<typeof createUserRequestSchema>;
 
-export const getUserSchema = z.object({
-	params: z.object({ id: objectIdSchema }),
-});
-export type GetUserSchema = z.infer<typeof getUserSchema>;
+// ========== Read ==========
 
-export const getAllUsersSchema = z.object({
-	query: paginationSchema,
+export const getAllUsersRequestSchema = z.object({
+  query: paginationSchema,
 });
-export type GetAllUsersSchema = z.infer<typeof getAllUsersSchema>;
+export type GetAllUsersRequestSchema = z.infer<typeof getAllUsersRequestSchema>;
 
-export const deleteUserSchema = z.object({
-	params: z.object({ id: objectIdSchema }),
+export const getUserRequestSchema = z.object({
+  params: z.object({ id: objectIdSchema }),
 });
-export type DeleteUserSchema = z.infer<typeof deleteUserSchema>;
+export type GetUserRequestSchema = z.infer<typeof getUserRequestSchema>;
+
+// ========== Update ==========
+
+export const updateUserRequestSchema = z.object({
+  params: z.object({ id: objectIdSchema }),
+  body: updateUserBodySchema,
+});
+export type UpdateUserRequestSchema = z.infer<typeof updateUserRequestSchema>;
+
+// ========== Delete ==========
+
+export const deleteUserRequestSchema = z.object({
+  params: z.object({ id: objectIdSchema }),
+});
+export type DeleteUserRequestSchema = z.infer<typeof deleteUserRequestSchema>;

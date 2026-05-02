@@ -15,9 +15,7 @@ import {
 
 const router: Router = express.Router();
 
-// ============================================================
-// CREATE
-// ============================================================
+// ========== Create ==========
 
 router.post(
   "/",
@@ -28,9 +26,7 @@ router.post(
   catchAsync(productController.createProduct),
 );
 
-// ============================================================
-// READ
-// ============================================================
+// ========== Read ==========
 
 router.get("/", catchAsync(productController.getProducts));
 
@@ -40,9 +36,7 @@ router.get(
   catchAsync(productController.getProductById),
 );
 
-// ============================================================
-// UPDATE
-// ============================================================
+// ========== Update ==========
 
 router.put(
   "/:id",
@@ -61,9 +55,7 @@ router.patch(
   catchAsync(productController.updateProductStatus),
 );
 
-// ============================================================
-// DELETE
-// ============================================================
+// ========== Delete ==========
 
 router.delete(
   "/:id",

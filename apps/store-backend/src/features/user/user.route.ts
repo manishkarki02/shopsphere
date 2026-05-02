@@ -5,51 +5,48 @@ import validatorMiddleware from "@/common/middlewares/validator.middleware";
 import { catchAsync } from "@/common/utils/error.util";
 import * as userController from "./user.controller";
 import {
-	createUserSchema,
-	deleteUserSchema,
-	getAllUsersSchema,
-	getUserSchema,
-	updateUserSchema,
-} from "./validation/user.validation";
+	createUserRequestSchema,
+	deleteUserRequestSchema,
+	getAllUsersRequestSchema,
+	getUserRequestSchema,
+	updateUserRequestSchema,
 
 const router: Router = express.Router();
+
+// ========== Create ==========
 
 router.post(
 	"/",
 	jwtAuthMiddleware,
 	requireRole(["ADMIN"]),
-	validatorMiddleware(createUserSchema),
+	validatorMiddleware(createUserRequestSchema),
 	catchAsync(userController.createUser),
 );
+
+// ========== Read ==========
 
 router.get(
 	"/",
 	jwtAuthMiddleware,
 	requireRole(["STAFF", "ADMIN"]),
-	validatorMiddleware(getAllUsersSchema),
+	validatorMiddleware(getAllUsersRequestSchema),
 	catchAsync(userController.getAllUsers),
 );
 
 router.get(
 	"/:id",
 	jwtAuthMiddleware,
-	validatorMiddleware(getUserSchema),
+	validatorMiddleware(getUserRequestSchema),
 	catchAsync(userController.getUserById),
 );
+
+// ========== Update ==========
 
 router.put(
 	"/:id",
 	jwtAuthMiddleware,
-	validatorMiddleware(updateUserSchema),
+	validatorMiddleware(updateUserRequestSchema),
 	catchAsync(userController.updateUserById),
-);
-
-router.delete(
-	"/:id",
-	jwtAuthMiddleware,
-	requireRole(["ADMIN"]),
-	validatorMiddleware(deleteUserSchema),
-	catchAsync(userController.deleteUserById),
 );
 
 // Admin — update user role
@@ -66,6 +63,26 @@ router.patch(
 	jwtAuthMiddleware,
 	requireRole(["STAFF", "ADMIN"]),
 	catchAsync(userController.blockUser),
+);
+
+// ========== Delete ==========
+
+router.delete(
+	"/:id",
+	jwtAuthMiddleware,
+	requireRole(["ADMIN"]),
+	validatorMiddleware(deleteUserRequestSchema),
+	catchAsync(userController.deleteUserById),
+);
+
+// ========== Delete ==========
+
+router.delete(
+  "/:id",
+  jwtAuthMiddleware,
+  requireRole(["ADMIN"]),
+  validatorMiddleware(deleteUserSchema),
+  catchAsync(userController.deleteUserById),
 );
 
 export default router;

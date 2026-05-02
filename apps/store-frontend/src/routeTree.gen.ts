@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as UserRouteImport } from './routes/user'
 import { Route as ProductsRouteImport } from './routes/products'
+import { Route as ContactUsRouteImport } from './routes/contact-us'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as AppleRouteImport } from './routes/apple'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as GuardRouteImport } from './routes/_guard'
 import { Route as IndexRouteImport } from './routes/index'
@@ -46,9 +48,19 @@ const ProductsRoute = ProductsRouteImport.update({
   path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactUsRoute = ContactUsRouteImport.update({
+  id: '/contact-us',
+  path: '/contact-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CartRoute = CartRouteImport.update({
   id: '/cart',
   path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppleRoute = AppleRouteImport.update({
+  id: '/apple',
+  path: '/apple',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -140,7 +152,9 @@ const AdminProductsProductIdEditRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/apple': typeof AppleRoute
   '/cart': typeof CartRoute
+  '/contact-us': typeof ContactUsRoute
   '/products': typeof ProductsRoute
   '/user': typeof UserRouteWithChildren
   '/wishlist': typeof WishlistRoute
@@ -162,7 +176,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/apple': typeof AppleRoute
   '/cart': typeof CartRoute
+  '/contact-us': typeof ContactUsRoute
   '/products': typeof ProductsRoute
   '/wishlist': typeof WishlistRoute
   '/auth/login': typeof AuthLoginRoute
@@ -185,7 +201,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_guard': typeof GuardRouteWithChildren
   '/about': typeof AboutRoute
+  '/apple': typeof AppleRoute
   '/cart': typeof CartRoute
+  '/contact-us': typeof ContactUsRoute
   '/products': typeof ProductsRoute
   '/user': typeof UserRouteWithChildren
   '/wishlist': typeof WishlistRoute
@@ -209,7 +227,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/apple'
     | '/cart'
+    | '/contact-us'
     | '/products'
     | '/user'
     | '/wishlist'
@@ -231,7 +251,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/apple'
     | '/cart'
+    | '/contact-us'
     | '/products'
     | '/wishlist'
     | '/auth/login'
@@ -253,7 +275,9 @@ export interface FileRouteTypes {
     | '/'
     | '/_guard'
     | '/about'
+    | '/apple'
     | '/cart'
+    | '/contact-us'
     | '/products'
     | '/user'
     | '/wishlist'
@@ -277,7 +301,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GuardRoute: typeof GuardRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AppleRoute: typeof AppleRoute
   CartRoute: typeof CartRoute
+  ContactUsRoute: typeof ContactUsRoute
   ProductsRoute: typeof ProductsRoute
   UserRoute: typeof UserRouteWithChildren
   WishlistRoute: typeof WishlistRoute
@@ -318,11 +344,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact-us': {
+      id: '/contact-us'
+      path: '/contact-us'
+      fullPath: '/contact-us'
+      preLoaderRoute: typeof ContactUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cart': {
       id: '/cart'
       path: '/cart'
       fullPath: '/cart'
       preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apple': {
+      id: '/apple'
+      path: '/apple'
+      fullPath: '/apple'
+      preLoaderRoute: typeof AppleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -471,7 +511,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GuardRoute: GuardRouteWithChildren,
   AboutRoute: AboutRoute,
+  AppleRoute: AppleRoute,
   CartRoute: CartRoute,
+  ContactUsRoute: ContactUsRoute,
   ProductsRoute: ProductsRoute,
   UserRoute: UserRouteWithChildren,
   WishlistRoute: WishlistRoute,

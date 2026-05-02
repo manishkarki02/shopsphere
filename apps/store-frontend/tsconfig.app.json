@@ -2,6 +2,7 @@
 	"extends": "@shop-sphere/typescript-config/react.json",
 	"compilerOptions": {
 		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+		"jsx": "react-jsx",
 		"types": ["vite/client"],
 		"paths": {
 			"@/*": ["./src/*"]

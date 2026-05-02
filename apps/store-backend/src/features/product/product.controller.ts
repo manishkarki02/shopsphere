@@ -10,10 +10,7 @@ import type {
   UpdateProductStatusRequestSchema,
 } from "./validation/product.validation";
 
-// ============================================================
-// CREATE
-// ============================================================
-
+// ========== Create ==========
 export const createProduct: ValidatedRequestHandler<
   CreateProductRequestSchema
 > = async (req, res) => {
@@ -26,10 +23,7 @@ export const createProduct: ValidatedRequestHandler<
   });
 };
 
-// ============================================================
-// READ
-// ============================================================
-
+// ========== Read ==========
 export const getProducts: ValidatedRequestHandler = async (req, res) => {
   const products = await productService.getProducts(req.query);
   return ApiResponse.success(res, httpStatus.OK, {
@@ -48,10 +42,7 @@ export const getProductById: ValidatedRequestHandler<
   });
 };
 
-// ============================================================
-// UPDATE
-// ============================================================
-
+// ========== Update ==========
 export const updateProduct: ValidatedRequestHandler<
   UpdateProductRequestSchema
 > = async (req, res) => {
@@ -80,10 +71,7 @@ export const updateProductStatus: ValidatedRequestHandler<
   });
 };
 
-// ============================================================
-// DELETE
-// ============================================================
-
+// ========== Delete ==========
 export const deleteProduct: ValidatedRequestHandler<
   DeleteProductRequestSchema
 > = async (req, res) => {

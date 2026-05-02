@@ -177,7 +177,7 @@ function CartPage() {
 										<span>
 											$
 											{
-												/* @ts-ignore */ (
+												/* @ts-expect-error */ (
 													(item.discountPrice && item.discountPrice < item.price
 														? /* @ts-ignore */ item.discountPrice
 														: item.price) * item.quantity

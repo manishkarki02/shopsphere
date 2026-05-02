@@ -1,53 +1,53 @@
 import {
-  type CreateProductBody,
-  createProductBodySchema,
-  objectIdSchema,
-  type UpdateProductBody,
-  type UpdateProductStatusBody,
-  updateProductBodySchema,
-  updateProductStatusBodySchema,
+	type CreateProductBody,
+	createProductBodySchema,
+	objectIdSchema,
+	type UpdateProductBody,
+	type UpdateProductStatusBody,
+	updateProductBodySchema,
+	updateProductStatusBodySchema,
 } from "@shop-sphere/shared";
 import { z } from "zod";
 
 // ========== Create ==========
 
 export const createProductRequestSchema = z.object({
-  body: createProductBodySchema as unknown as z.ZodType<CreateProductBody>,
+	body: createProductBodySchema as unknown as z.ZodType<CreateProductBody>,
 });
 export type CreateProductRequestSchema = z.infer<
-  typeof createProductRequestSchema
+	typeof createProductRequestSchema
 >;
 
 // ========== Read ==========
 
 export const getProductRequestSchema = z.object({
-  params: z.object({ id: objectIdSchema }),
+	params: z.object({ id: objectIdSchema }),
 });
 export type GetProductRequestSchema = z.infer<typeof getProductRequestSchema>;
 
 // ========== Update ==========
 
 export const updateProductRequestSchema = z.object({
-  params: z.object({ id: objectIdSchema }),
-  body: updateProductBodySchema as unknown as z.ZodType<UpdateProductBody>,
+	params: z.object({ id: objectIdSchema }),
+	body: updateProductBodySchema as unknown as z.ZodType<UpdateProductBody>,
 });
 export type UpdateProductRequestSchema = z.infer<
-  typeof updateProductRequestSchema
+	typeof updateProductRequestSchema
 >;
 
 export const updateProductStatusRequestSchema = z.object({
-  params: z.object({ id: objectIdSchema }),
-  body: updateProductStatusBodySchema as unknown as z.ZodType<UpdateProductStatusBody>,
+	params: z.object({ id: objectIdSchema }),
+	body: updateProductStatusBodySchema as unknown as z.ZodType<UpdateProductStatusBody>,
 });
 export type UpdateProductStatusRequestSchema = z.infer<
-  typeof updateProductStatusRequestSchema
+	typeof updateProductStatusRequestSchema
 >;
 
 // ========== Delete ==========
 
 export const deleteProductRequestSchema = z.object({
-  params: z.object({ id: objectIdSchema }),
+	params: z.object({ id: objectIdSchema }),
 });
 export type DeleteProductRequestSchema = z.infer<
-  typeof deleteProductRequestSchema
+	typeof deleteProductRequestSchema
 >;

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import z from "zod/v4";
 
 export const addCategoryBodySchema = z.object({
 	categoryName: z.string().min(1, "categoryName is required."),

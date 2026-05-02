@@ -10,6 +10,8 @@ import {
 	getAllUsersRequestSchema,
 	getUserRequestSchema,
 	updateUserRequestSchema,
+} from "./validation/user.validation";
+import { Roles } from "@shop-sphere/shared";
 
 const router: Router = express.Router();
 
@@ -18,7 +20,7 @@ const router: Router = express.Router();
 router.post(
 	"/",
 	jwtAuthMiddleware,
-	requireRole(["ADMIN"]),
+	requireRole([Roles.ADMIN]),
 	validatorMiddleware(createUserRequestSchema),
 	catchAsync(userController.createUser),
 );
@@ -28,7 +30,7 @@ router.post(
 router.get(
 	"/",
 	jwtAuthMiddleware,
-	requireRole(["STAFF", "ADMIN"]),
+	requireRole([Roles.STAFF, Roles.ADMIN]),
 	validatorMiddleware(getAllUsersRequestSchema),
 	catchAsync(userController.getAllUsers),
 );
@@ -53,7 +55,7 @@ router.put(
 router.patch(
 	"/:id/role",
 	jwtAuthMiddleware,
-	requireRole(["ADMIN"]),
+	requireRole([Roles.ADMIN]),
 	catchAsync(userController.updateUserRole),
 );
 
@@ -61,7 +63,7 @@ router.patch(
 router.patch(
 	"/:id/block",
 	jwtAuthMiddleware,
-	requireRole(["STAFF", "ADMIN"]),
+	requireRole([Roles.STAFF, Roles.ADMIN]),
 	catchAsync(userController.blockUser),
 );
 
@@ -70,7 +72,7 @@ router.patch(
 router.delete(
 	"/:id",
 	jwtAuthMiddleware,
-	requireRole(["ADMIN"]),
+	requireRole([Roles.ADMIN]),
 	validatorMiddleware(deleteUserRequestSchema),
 	catchAsync(userController.deleteUserById),
 );
@@ -78,11 +80,11 @@ router.delete(
 // ========== Delete ==========
 
 router.delete(
-  "/:id",
-  jwtAuthMiddleware,
-  requireRole(["ADMIN"]),
-  validatorMiddleware(deleteUserSchema),
-  catchAsync(userController.deleteUserById),
+	"/:id",
+	jwtAuthMiddleware,
+	requireRole([Roles.ADMIN]),
+	validatorMiddleware(deleteUserRequestSchema),
+	catchAsync(userController.deleteUserById),
 );
 
 export default router;

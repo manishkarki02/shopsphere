@@ -1,4 +1,4 @@
-import type { IProductResponse } from "@shop-sphere/shared";
+import type { IProduct, IProductResponse } from "@shop-sphere/shared";
 import httpStatus from "http-status";
 import { applyQueryFeatures } from "@/common/utils/query.utils";
 import { ApiError } from "@/common/utils/response.util";
@@ -75,7 +75,7 @@ export async function updateProduct(
 	body: UpdateProductRequestSchema["body"],
 	files?: Express.Multer.File[],
 ) {
-	const updateData = { ...body };
+	const updateData: Partial<IProduct> = { ...body };
 
 	if (files && files.length > 0) {
 		const images = files.map((file) => {

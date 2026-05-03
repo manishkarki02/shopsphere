@@ -16,7 +16,7 @@ const objectIdSchema = z
 	});
 
 export const addCartSchema = z.object({
-	body: addCartBodySchema as unknown as z.ZodType<AddCartBody>,
+	body: addCartBodySchema,
 });
 
 export const addAllToCartSchema = z.object({

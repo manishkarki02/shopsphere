@@ -1,5 +1,5 @@
 import z from "zod/v4";
-import { objectIdSchema } from "./common.schema";
+import { objectIdSchema } from "../common";
 
 export const addCartBodySchema = z.object({
 	id: objectIdSchema,
@@ -18,7 +18,3 @@ export const updateCartBodySchema = z.object({
 		}),
 	),
 });
-
-export type AddCartBody = z.infer<typeof addCartBodySchema>;
-export type AddAllToCartBody = z.infer<typeof addAllToCartBodySchema>;
-export type UpdateCartBody = z.infer<typeof updateCartBodySchema>;

@@ -1,9 +1,21 @@
 import z from "zod/v4";
-import { objectIdSchema } from "./common.schema";
+import { objectIdSchema } from "../common";
 
 export const createProductBodySchema = z.object({
-  productName: z.string().min(1, "productName is required."),
-  description: z.string().min(1, "description is required."),
+  productName: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined
+          ? "productName is required"
+          : "Invalid product name",
+    })
+    .min(1, "productName is required."),
+  description: z.string({
+    error: (issue) =>
+      issue.input === undefined
+        ? "description is required"
+        : "Invalid description",
+  }).min(1, "description is required."),
   color: z.array(z.string()).optional(),
   price: z.number().or(
     z
@@ -69,9 +81,3 @@ export const updateProductStatusBodySchema = z.object({
       issue.input === undefined ? "isActive is required" : "Invalid data",
   }),
 });
-
-export type CreateProductBody = z.infer<typeof createProductBodySchema>;
-export type UpdateProductBody = z.infer<typeof updateProductBodySchema>;
-export type UpdateProductStatusBody = z.infer<
-  typeof updateProductStatusBodySchema
->;

@@ -1,13 +1,20 @@
-import type { RequestHandler } from "express";
 import httpStatus from "http-status";
 import type { ValidatedRequestHandler } from "@/common/types/types/request.type";
 import { ApiResponse } from "@/common/utils/response.util";
 import * as cartService from "./cart.service";
+import type {
+	AddAllToCartRequestSchema,
+	AddCartRequestSchema,
+	DeleteCartRequestSchema,
+	UpdateCartRequestSchema,
+} from "./validation/cart.validation";
 
-export const addCart: ValidatedRequestHandler<
-	typeof import("./validation/cart.validation").addCartSchema
-> = async (req, res) => {
-	// Assuming user is populated in res.locals by auth middleware
+// ========== Create ==========
+
+export const addCart: ValidatedRequestHandler<AddCartRequestSchema> = async (
+	req,
+	res,
+) => {
 	const user = res.locals.user;
 	const cart = await cartService.addCart(user._id, req.body);
 	return ApiResponse.success(res, httpStatus.CREATED, {
@@ -17,7 +24,7 @@ export const addCart: ValidatedRequestHandler<
 };
 
 export const addAllToCart: ValidatedRequestHandler<
-	typeof import("./validation/cart.validation").addAllToCartSchema
+	AddAllToCartRequestSchema
 > = async (req, res) => {
 	const user = res.locals.user;
 	const cart = await cartService.addAllToCart(user._id, req.body);
@@ -27,18 +34,22 @@ export const addAllToCart: ValidatedRequestHandler<
 	});
 };
 
+// ========== Update ==========
+
 export const updateCart: ValidatedRequestHandler<
-	typeof import("./validation/cart.validation").updateCartSchema
+	UpdateCartRequestSchema
 > = async (req, res) => {
 	const user = res.locals.user;
-	const cart = await cartService.updateCart(user._id, req.params.id, req.body);
+	const cart = await cartService.updateCart(user._id, req.body);
 	return ApiResponse.success(res, httpStatus.OK, {
 		message: "Cart updated successfully",
 		data: cart,
 	});
 };
 
-export const getCarts: RequestHandler = async (req, res) => {
+// ========== Read ==========
+
+export const getCarts: ValidatedRequestHandler = async (_req, res) => {
 	const user = res.locals.user;
 	const carts = await cartService.getCarts(user._id);
 	return ApiResponse.success(res, httpStatus.OK, {
@@ -47,8 +58,10 @@ export const getCarts: RequestHandler = async (req, res) => {
 	});
 };
 
+// ========== Delete ==========
+
 export const deleteCart: ValidatedRequestHandler<
-	typeof import("./validation/cart.validation").deleteCartSchema
+	DeleteCartRequestSchema
 > = async (req, res) => {
 	const user = res.locals.user;
 	await cartService.deleteCart(user._id, req.params.id);

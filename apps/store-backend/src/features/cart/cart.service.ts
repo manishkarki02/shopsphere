@@ -3,14 +3,18 @@ import { ApiError } from "@/common/utils/response.util";
 import { Product } from "@/features/product/product.model";
 import { Cart } from "./cart.model";
 import type {
-	AddAllToCartSchema,
-	AddCartSchema,
-	UpdateCartSchema,
+	AddAllToCartRequestSchema,
+	AddCartRequestSchema,
+	UpdateCartRequestSchema,
 } from "./validation/cart.validation";
 
-export async function addCart(userId: string, body: AddCartSchema) {
-	const { id, quantity } = body;
+// ========== Create ==========
 
+export async function addCart(
+	userId: string,
+	body: AddCartRequestSchema["body"],
+) {
+	const { id, quantity } = body;
 	const foundProduct = await Product.findById(id);
 	if (!foundProduct) {
 		throw new ApiError(httpStatus.NOT_FOUND, {
@@ -47,7 +51,10 @@ export async function addCart(userId: string, body: AddCartSchema) {
 	return existingCart;
 }
 
-export async function addAllToCart(userId: string, body: AddAllToCartSchema) {
+export async function addAllToCart(
+	userId: string,
+	body: AddAllToCartRequestSchema["body"],
+) {
 	const { productIds } = body;
 
 	let userCart = await Cart.findOne({ userId });
@@ -79,10 +86,11 @@ export async function addAllToCart(userId: string, body: AddAllToCartSchema) {
 	return userCart;
 }
 
+// ========== Update ==========
+
 export async function updateCart(
 	userId: string,
-	id: string,
-	body: UpdateCartSchema,
+	body: UpdateCartRequestSchema["body"],
 ) {
 	const { updatedItems } = body;
 
@@ -101,6 +109,8 @@ export async function updateCart(
 	return userCart;
 }
 
+// ========== Read ==========
+
 export async function getCarts(userId: string) {
 	const userCart = await Cart.findOne({ userId }).populate("items.productId");
 	if (!userCart)
@@ -113,6 +123,8 @@ export async function getCarts(userId: string) {
 
 	return productsInCart;
 }
+
+// ========== Delete ==========
 
 export async function deleteCart(userId: string, id: string) {
 	const userCart = await Cart.findOne({ userId });

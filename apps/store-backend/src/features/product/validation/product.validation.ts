@@ -1,10 +1,7 @@
 import {
-	type CreateProductBody,
 	createProductBodySchema,
 	objectIdSchema,
 	queryValidationSchema,
-	type UpdateProductBody,
-	type UpdateProductStatusBody,
 	updateProductBodySchema,
 	updateProductStatusBodySchema,
 } from "@shop-sphere/shared";
@@ -13,7 +10,7 @@ import { z } from "zod/v4";
 // ========== Create ==========
 
 export const createProductRequestSchema = z.object({
-	body: createProductBodySchema as unknown as z.ZodType<CreateProductBody>,
+	body: createProductBodySchema,
 });
 export type CreateProductRequestSchema = z.infer<
 	typeof createProductRequestSchema
@@ -35,7 +32,7 @@ export type GetProductRequestSchema = z.infer<typeof getProductRequestSchema>;
 
 export const updateProductRequestSchema = z.object({
 	params: z.object({ id: objectIdSchema }),
-	body: updateProductBodySchema as unknown as z.ZodType<UpdateProductBody>,
+	body: updateProductBodySchema,
 });
 export type UpdateProductRequestSchema = z.infer<
 	typeof updateProductRequestSchema
@@ -43,7 +40,7 @@ export type UpdateProductRequestSchema = z.infer<
 
 export const updateProductStatusRequestSchema = z.object({
 	params: z.object({ id: objectIdSchema }),
-	body: updateProductStatusBodySchema as unknown as z.ZodType<UpdateProductStatusBody>,
+	body: updateProductStatusBodySchema,
 });
 export type UpdateProductStatusRequestSchema = z.infer<
 	typeof updateProductStatusRequestSchema

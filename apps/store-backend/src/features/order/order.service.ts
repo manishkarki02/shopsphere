@@ -1,5 +1,6 @@
-import type { UpdateOrderStatusBody } from "@shop-sphere/shared";
+import type { updateOrderStatusBodySchema } from "@shop-sphere/shared";
 import httpStatus from "http-status";
+import type { z } from "zod/v4";
 import { ApiError } from "@/common/utils/response.util";
 import { Order } from "./order.model";
 
@@ -26,7 +27,7 @@ export async function getOrderById(id: string) {
 
 export async function updateOrderStatus(
 	id: string,
-	body: UpdateOrderStatusBody,
+	body: z.infer<typeof updateOrderStatusBodySchema>,
 ) {
 	const order = await Order.findByIdAndUpdate(
 		id,

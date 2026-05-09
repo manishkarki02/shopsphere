@@ -1,11 +1,9 @@
-import mongoose, { type Document } from "mongoose";
+import type { ICategoryResponse } from "@shop-sphere/shared";
+import mongoose from "mongoose";
 
-export interface ICategory extends Document {
-	name: string;
-	icon: string;
-}
+interface ICategoryDocument extends Omit<ICategoryResponse, "_id"> {}
 
-const categorySchema = new mongoose.Schema<ICategory>(
+const categorySchema = new mongoose.Schema<ICategoryDocument>(
 	{
 		name: {
 			type: String,
@@ -21,4 +19,7 @@ const categorySchema = new mongoose.Schema<ICategory>(
 	},
 );
 
-export const Category = mongoose.model<ICategory>("Categories", categorySchema);
+export const Category = mongoose.model<ICategoryDocument>(
+	"Categories",
+	categorySchema,
+);

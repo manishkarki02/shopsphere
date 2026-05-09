@@ -1,30 +1,23 @@
 import {
-	type AddCategoryBody,
 	addCategoryBodySchema,
-	type UpdateCategoryBody,
 	updateCategoryBodySchema,
 } from "@shop-sphere/shared";
-import mongoose from "mongoose";
-import { z } from "zod";
-
-const objectIdSchema = z
-	.string()
-	.refine((val) => mongoose.Types.ObjectId.isValid(val), {
-		message: "Invalid Mongoose ObjectId",
-	});
+import { z } from "zod/v4";
+import { objectIdSchema } from "@/common/validations/common.validation";
 
 export const addCategorySchema = z.object({
-	body: addCategoryBodySchema as unknown as z.ZodType<AddCategoryBody>,
+	body: addCategoryBodySchema,
 });
 
 export const updateCategorySchema = z.object({
 	params: z.object({ id: objectIdSchema }),
-	body: updateCategoryBodySchema as unknown as z.ZodType<UpdateCategoryBody>,
+	body: updateCategoryBodySchema,
 });
 
 export const deleteCategorySchema = z.object({
 	params: z.object({ id: objectIdSchema }),
 });
 
-export type AddCategorySchema = AddCategoryBody;
-export type UpdateCategorySchema = UpdateCategoryBody;
+export type AddCategorySchema = z.infer<typeof addCategorySchema>;
+export type UpdateCategorySchema = z.infer<typeof updateCategorySchema>;
+export type DeleteCategorySchema = z.infer<typeof deleteCategorySchema>;

@@ -1,3 +1,4 @@
+import type { ICartResponse, ICategoryResponse } from "@shop-sphere/shared";
 import httpStatus from "http-status";
 import { ApiError } from "@/common/utils/response.util";
 import Environment from "@/configs/env";
@@ -8,7 +9,7 @@ import type {
 } from "./validation/category.validation";
 
 export async function addCategory(
-	body: AddCategorySchema,
+	body: AddCategorySchema["body"],
 	file?: Express.Multer.File,
 ) {
 	if (!file) {
@@ -27,12 +28,12 @@ export async function addCategory(
 	}
 
 	const newCategory = await Category.create({ name: body.categoryName, icon });
-	return newCategory;
+	return newCategory.toObject() as ICartResponse;
 }
 
 export async function updateCategory(
 	id: string,
-	body: UpdateCategorySchema,
+	body: UpdateCategorySchema["body"],
 	file?: Express.Multer.File,
 ) {
 	const updateData: any = { ...body };
@@ -51,11 +52,11 @@ export async function updateCategory(
 		});
 	}
 
-	return updatedCategory;
+	return updatedCategory.toObject() as ICategoryResponse;
 }
 
 export async function getCategories() {
-	const categories = await Category.find();
+	const categories = await Category.find().lean<ICategoryResponse>();
 	return categories;
 }
 

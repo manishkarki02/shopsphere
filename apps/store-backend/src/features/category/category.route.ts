@@ -1,3 +1,4 @@
+import { Roles } from "@shop-sphere/shared";
 import express, { type Router } from "express";
 import { jwtAuthMiddleware } from "@/common/middlewares/auth.middleware";
 import { iconUpload } from "@/common/middlewares/fileUpload.middleware";
@@ -16,7 +17,7 @@ const router: Router = express.Router();
 router.post(
 	"/",
 	jwtAuthMiddleware,
-	requireRole(["STAFF", "ADMIN"]),
+	requireRole([Roles.STAFF, Roles.ADMIN]),
 	iconUpload.single("icon"),
 	validatorMiddleware(addCategorySchema),
 	catchAsync(categoryController.addCategory),
@@ -25,7 +26,7 @@ router.post(
 router.patch(
 	"/:id",
 	jwtAuthMiddleware,
-	requireRole(["STAFF", "ADMIN"]),
+	requireRole([Roles.STAFF, Roles.ADMIN]),
 	iconUpload.single("icon"),
 	validatorMiddleware(updateCategorySchema),
 	catchAsync(categoryController.updateCategory),
@@ -40,7 +41,7 @@ router.get(
 router.delete(
 	"/:id",
 	jwtAuthMiddleware,
-	requireRole(["STAFF", "ADMIN"]),
+	requireRole([Roles.STAFF, Roles.ADMIN]),
 	validatorMiddleware(deleteCategorySchema),
 	catchAsync(categoryController.deleteCategory),
 );
